@@ -1,0 +1,55 @@
+.wrapper {
+    background-color: cyan;
+    margin: 50px 50px;
+    height: 400px;
+    width: 500px;
+}
+#top-bar {
+    background-color: orange;
+
+    height: 40px;
+    width: 100%;
+}
+
+#building-text {
+    background-color: yellow;
+    float: right;
+    height: 100%;
+    width: 140px;
+}
+
+#building-menu {
+    background-color: blue;
+
+    float: right;
+    height: 360px;
+    width: 140px;
+}
+
+#board-holder {
+    background-color: pink;
+        float: left;
+    margin: 5px;
+    height: 350px;
+    width: 350px;
+}
+
+#board {
+    background-color: red;
+    padding: 15px;
+}
+
+.row{
+    margin: auto;
+
+}
+
+.tile{
+    background-color: blueviolet;
+    width: 64px;
+    height: 64px;
+}
+
+.tile:hover{
+    background-color: yellow;
+}
