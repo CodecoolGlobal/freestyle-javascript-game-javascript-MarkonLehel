@@ -4,6 +4,7 @@
     height: 400px;
     width: 500px;
 }
+
 #top-bar {
     background-color: orange;
 
@@ -28,7 +29,7 @@
 
 #board-holder {
     background-color: pink;
-        float: left;
+    float: left;
     margin: 5px;
     height: 350px;
     width: 350px;
@@ -39,26 +40,26 @@
     padding: 15px;
 }
 
-.row{
+.row {
     margin: auto;
 
 }
 
-.tile{
+.tile {
     background-color: blueviolet;
     width: 64px;
     height: 64px;
 }
 
-.tile.field{
+.tile.field {
     background-image: url("Sprites/Field.png");
 }
 
-.tile.mountain{
+.tile.mountain {
     background-image: url("Sprites/MountainTile.png");
 }
 
-.tile.forest{
+.tile.forest {
     background-image: url("Sprites/Forest.png");
 }
 
@@ -67,13 +68,21 @@
     width: 32px;
     position: relative;
     top: 32px;
-    left:32px ;
+    left: 32px;
     background-image: url('Sprites/SummerVillagerDefault.png');
 }
+
 
 .dragged {
     border-style: solid;
 }
-.worked{
+
+.opaque {
+    border-style: none;
+    opacity: 0.4;
+}
+
+
+.worked {
 
 }

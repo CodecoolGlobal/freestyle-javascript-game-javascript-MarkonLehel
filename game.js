@@ -5,6 +5,7 @@ let currentFoodPool = 25;
 let currentWoodPool = 25;
 let currentOrePool = 25;
 let turnCount = 0;
+let isWinter = false;
 initGame();
 
 function drawBoard() {
@@ -102,8 +103,7 @@ function initGame() {
     drawBoard();
     setUpTiles();
     setInterval(FixedUpdate, 2000);
-    createSerfAt(4, 4);
-    createSerfAt(3, 3);
+    createSerfAt(2, 2);
 }
 
 
@@ -111,6 +111,47 @@ function FixedUpdate() {
 
     updateResources();
     updateTurnCounter();
+}
+
+
+
+function updateTurnCounter() {
+    turnCount++;
+    let turnCounter = document.getElementById('turn-counter');
+    turnCounter.innerHTML = turnCount.toString();
+
+}
+
+function calcResourceIncomePerTurn() {
+    let fieldIncome = 0;
+    let forestIncome = 0;
+    let mountainIncome = 0;
+
+    for (const row of tiles) {
+        {
+            for (const tile of row) {
+                {
+                    if (tile.hasWorker) {
+                        if (tile.tileType === 'field') {
+                            fieldIncome += tile.resourceAmount + (tile.hasProductionImprovement * 2)
+
+                        } else if (tile.tileType === 'forest') {
+                            forestIncome += tile.resourceAmount + (tile.hasProductionImprovement * 2)
+                        } else if (tile.tileType === 'mountain') {
+                            mountainIncome += tile.resourceAmount + (tile.hasProductionImprovement * 2)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return [fieldIncome, mountainIncome, forestIncome];
+}
+
+function calcResourceConsumptionPerTurn() {
+    let foodConsumption = numOfSerfs;
+    // let woodConsumption = numOfSerfs*3; //winter
+    return [foodConsumption];
 }
 
 function updateResources() {
@@ -146,32 +187,6 @@ function updateResources() {
     serfCounter.innerHTML = numOfSerfs.toString();
 
 }
-
-function updateTurnCounter() {
-    turnCount++;
-    let turnCounter = document.getElementById('turn-counter');
-    turnCounter.innerHTML = turnCount.toString();
-
-}
-
-function calcResourceIncomePerTurn() {
-    let numOfWorkedFields = document.querySelectorAll(".worked-field").length;
-    let numOfWorkedMountains = document.querySelectorAll(".worked-mountain").length;
-    let numOfWorkedForests = document.querySelectorAll(".worked-forest").length;
-
-    let fieldIncome = numOfWorkedFields * 2;
-    let mountainIncome = numOfWorkedMountains * 2;
-    let forestIncome = numOfWorkedForests * 2;
-
-    return [fieldIncome, mountainIncome, forestIncome];
-}
-
-function calcResourceConsumptionPerTurn() {
-    let foodConsumption = numOfSerfs;
-    // let woodConsumption = numOfSerfs*3; //winter
-    return [foodConsumption];
-}
-
 function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
     let index = row * 5 + col;
@@ -203,8 +218,9 @@ function toggleTileWorkerStatus(tile) {
 //Serf
 let parentTile;
 
-function serfDragStart() {
+function serfDragStart(e) {
     this.classList.add('dragged');
+    setTimeout(() => (this.classList.add('opaque')), 0);
     let row = this.parentNode.getAttribute('data-row');
     let col = this.parentNode.getAttribute('data-col');
     parentTile = tiles[row][col];
@@ -212,7 +228,9 @@ function serfDragStart() {
 
 
 function serfDragEnd() {
-
+    let serf = document.querySelector('.dragged');
+    serf.classList.remove('dragged');
+    serf.classList.remove('opaque');
 }
 
 //Tile Serf
@@ -230,11 +248,11 @@ function dragLeaveSerf() {
 
 function dropSerf(e) {
     console.log(this);
-    let serf = document.querySelector('.dragged');
-    serf.classList.remove('dragged');
+
     let row = this.getAttribute('data-row');
     let col = this.getAttribute('data-col');
     if (!tiles[row][col].hasWorker) {
+        let serf = document.querySelector('.dragged');
         console.log(tiles);
         toggleTileWorkerStatus(parentTile);
         toggleTileWorkerStatus(tiles[row][col]);
