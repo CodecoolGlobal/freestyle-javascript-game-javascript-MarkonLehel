@@ -50,6 +50,14 @@
     height: 64px;
 }
 
-.tile:hover{
-    background-color: yellow;
+.tile.field{
+    background-image: url("Sprites/Field.png");
+}
+
+.tile.mountain{
+    background-image: url("Sprites/MountainTile.png");
+}
+
+.tile.forest{
+    background-image: url("Sprites/Forest.png");
 }

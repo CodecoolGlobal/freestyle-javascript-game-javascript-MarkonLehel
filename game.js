@@ -56,7 +56,6 @@ function setUpTiles(fieldAmount = 12, mountainAmount = 6, forestAmount = 6) {
             tiles[row][col].tileType = 'mountain';
             currentMountains++;
         }
-
     }
 
     while (currentForests !== forestAmount) {
@@ -66,18 +65,18 @@ function setUpTiles(fieldAmount = 12, mountainAmount = 6, forestAmount = 6) {
             tiles[row][col].tileType = 'forest';
             currentForests++;
         }
-
     }
+    setHtmlTiles()
+}
 
-    /*if (row === 2 && col === 2) {
-        tiles[row][col].tileType = 'village';
-    } else if (currentFields !== fieldAmount && Math.floor(Math.random() * 2)) {
-        tiles[row][col].tileType = 'field';
-    } else if (currentMountains !== mountainAmount && Math.floor(Math.random() * 2)) {
-        tiles[row][col].tileType = 'mountain';
-    } else (currentForests !== forestAmount && Math.floor(Math.random() * 2)) {
-        tiles[row][col].tileType = 'forest';
-    }*/
+
+function setHtmlTiles () {
+    let document_tiles = document.getElementsByClassName('tile');
+    for (let i = 0; i < document_tiles.length; i++) {
+        let rowPos = document_tiles[i].getAttribute('data-row');
+        let colPos = document_tiles[i].getAttribute('data-col');
+        document_tiles[i].classList.add(tiles[rowPos][colPos].tileType);
+    }
 }
 
 
