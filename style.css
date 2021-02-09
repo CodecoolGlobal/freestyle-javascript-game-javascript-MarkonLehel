@@ -71,14 +71,9 @@
     background-image: url('Sprites/SummerVillagerDefault.png');
 }
 
-.worked-field{
-
+.dragged {
+    border-style: solid;
 }
-
-.worked-mountain{
-
-}
-
-.worked-forest{
+.worked{
 
 }

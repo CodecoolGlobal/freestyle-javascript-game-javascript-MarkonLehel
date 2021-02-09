@@ -71,16 +71,26 @@ function setUpTiles(fieldAmount = 12, mountainAmount = 6, forestAmount = 6) {
             currentForests++;
         }
     }
-    setHtmlTiles()
+    setUpHtmlTiles()
 }
 
-function setHtmlTiles() {
+function setUpHtmlTiles() {
     let document_tiles = document.getElementsByClassName('tile');
     for (let i = 0; i < document_tiles.length; i++) {
         let rowPos = document_tiles[i].getAttribute('data-row');
         let colPos = document_tiles[i].getAttribute('data-col');
         document_tiles[i].classList.add(tiles[rowPos][colPos].tileType);
+
+        initSerfDragAndDrop(document_tiles[i]);
+
     }
+}
+
+function initSerfDragAndDrop(tile) {
+    tile.addEventListener('dragover', dragOverSerf);
+    tile.addEventListener('dragenter', dragEnterSerf);
+    tile.addEventListener('dragleave', dragLeaveSerf);
+    tile.addEventListener('drop', dropSerf);
 }
 
 function setGameFieldSize(board, rows, cols) {
@@ -92,7 +102,8 @@ function initGame() {
     drawBoard();
     setUpTiles();
     setInterval(FixedUpdate, 2000);
-    createSerfAt(0,0);
+    createSerfAt(4, 4);
+    createSerfAt(3, 3);
 }
 
 
@@ -161,12 +172,17 @@ function calcResourceConsumptionPerTurn() {
     return [foodConsumption];
 }
 
-function createSerfAt (row, col) {
+function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
     let index = row * 5 + col;
     let tile = document_tiles[index];
     console.log(document_tiles);
-    tile.insertAdjacentHTML('beforeend', '<div class="serf"></div>')
+    tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
+    let serfObject = document_tiles[index].childNodes[0]
+    serfObject.addEventListener('dragstart', serfDragStart);
+    serfObject.addEventListener('dragend', serfDragEnd);
+    toggleTileWorkerStatus(tiles[row][col]);
+
 }
 
 function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovement = false, hasBuilding = false) {
@@ -176,3 +192,66 @@ function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovem
     this.hasProductionImprovement = hasProductionImprovement;
     this.hasBuilding = hasBuilding;
 }
+
+function toggleTileWorkerStatus(tile) {
+    tile.hasWorker = !tile.hasWorker;
+
+}
+
+
+//Dragging stuff
+//Serf
+let parentTile;
+
+function serfDragStart() {
+    this.classList.add('dragged');
+    let row = this.parentNode.getAttribute('data-row');
+    let col = this.parentNode.getAttribute('data-col');
+    parentTile = tiles[row][col];
+}
+
+
+function serfDragEnd() {
+
+}
+
+//Tile Serf
+
+
+function dragOverSerf(e) {
+    e.preventDefault();
+}
+
+function dragEnterSerf() {
+}
+
+function dragLeaveSerf() {
+}
+
+function dropSerf(e) {
+    console.log(this);
+    let serf = document.querySelector('.dragged');
+    serf.classList.remove('dragged');
+    let row = this.getAttribute('data-row');
+    let col = this.getAttribute('data-col');
+    if (!tiles[row][col].hasWorker) {
+        console.log(tiles);
+        toggleTileWorkerStatus(parentTile);
+        toggleTileWorkerStatus(tiles[row][col]);
+        e.currentTarget.appendChild(serf);
+    }
+
+}
+
+
+//Tile Building
+
+
+
+
+
+
+
+
+
+
