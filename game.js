@@ -1,5 +1,6 @@
-let board = document.getElementById('board')
-let tiles = []
+let board = document.getElementById('board');
+let tiles = [];
+let numOfSerfs = 1;
 initGame();
 
 function drawBoard() {
@@ -95,7 +96,7 @@ function initGame() {
 
 function FixedUpdate() {
 
-    let income = calcResourcePerTurn();
+    let income = calcResourceIncomePerTurn();
     let fieldIncome = income[0]
     let mountainIncome = income[1]
     let forestIncome = income[2]
@@ -104,16 +105,22 @@ function FixedUpdate() {
 
 }
 
-function calcResourcePerTurn() {
+function calcResourceIncomePerTurn() {
     let numOfWorkedFields = document.querySelectorAll(".worked-field").length;
     let numOfWorkedMountains = document.querySelectorAll(".worked-mountain").length;
     let numOfWorkedForests = document.querySelectorAll(".worked-forest").length;
 
-    let fieldIncome = numOfWorkedFields * 2;
-    let mountainIncome = numOfWorkedMountains * 2;
-    let forestIncome = numOfWorkedForests * 2;
+    let fieldIncome = numOfWorkedFields;
+    let mountainIncome = numOfWorkedMountains;
+    let forestIncome = numOfWorkedForests;
 
     return [fieldIncome, mountainIncome, forestIncome];
+}
+
+function calcResourceConsumptionPerTurn() {
+    let foodConsumption = numOfSerfs;
+    // let woodConsumption = numOfSerfs*3; //winter
+    return foodConsumption;
 }
 
 
