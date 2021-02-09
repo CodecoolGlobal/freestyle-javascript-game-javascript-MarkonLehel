@@ -6,6 +6,7 @@ let currentWoodPool = 25;
 let currentOrePool = 25;
 let turnCount = 0;
 let isWinter = false;
+let gameIsRunning = true;
 initGame();
 
 function drawBoard() {
@@ -102,7 +103,9 @@ function setGameFieldSize(board, rows, cols) {
 function initGame() {
     drawBoard();
     setUpTiles();
-    setInterval(FixedUpdate, 2000);
+    if (gameIsRunning) {
+        setInterval(FixedUpdate, 2000);
+    }
     createSerfAt(2, 2);
 }
 

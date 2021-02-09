@@ -63,6 +63,10 @@
     background-image: url("Sprites/Forest.png");
 }
 
+.tile.village {
+    background-image: url("Sprites/Village.png");
+}
+
 .serf {
     height: 32px;
     width: 32px;
