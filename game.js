@@ -86,16 +86,16 @@ function setGameFieldSize(board, rows, cols) {
 }
 
 function initGame() {
-    drawBoard()
-
-    setUpTiles()
-    console.log(tiles);
+    drawBoard();
+    setUpTiles();
+    setInterval(FixedUpdate,3000);
 
 }
 
 
 function FixedUpdate() {
 
+console.log('3');
 
 }
 
