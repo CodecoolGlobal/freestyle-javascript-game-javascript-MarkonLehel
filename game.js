@@ -95,9 +95,28 @@ function initGame() {
 
 function FixedUpdate() {
 
-console.log('3');
+    let income = calcResourcePerTurn();
+    let fieldIncome = income[0]
+    let mountainIncome = income[1]
+    let forestIncome = income[2]
+
+    console.log(fieldIncome, mountainIncome, forestIncome);
 
 }
+
+function calcResourcePerTurn() {
+    let numOfWorkedFields = document.querySelectorAll(".worked-field").length;
+    let numOfWorkedMountains = document.querySelectorAll(".worked-mountain").length;
+    let numOfWorkedForests = document.querySelectorAll(".worked-forest").length;
+
+    let fieldIncome = numOfWorkedFields * 2;
+    let mountainIncome = numOfWorkedMountains * 2;
+    let forestIncome = numOfWorkedForests * 2;
+
+    return [fieldIncome, mountainIncome, forestIncome];
+}
+
+
 
 function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovement = false, hasBuilding = false) {
     this.tileType = tileType;
