@@ -62,6 +62,15 @@
     background-image: url("Sprites/Forest.png");
 }
 
+.serf {
+    height: 32px;
+    width: 32px;
+    position: relative;
+    top: 32px;
+    left:32px ;
+    background-image: url('Sprites/SummerVillagerDefault.png');
+}
+
 .worked-field{
 
 }

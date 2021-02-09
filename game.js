@@ -74,8 +74,7 @@ function setUpTiles(fieldAmount = 12, mountainAmount = 6, forestAmount = 6) {
     setHtmlTiles()
 }
 
-
-function setHtmlTiles () {
+function setHtmlTiles() {
     let document_tiles = document.getElementsByClassName('tile');
     for (let i = 0; i < document_tiles.length; i++) {
         let rowPos = document_tiles[i].getAttribute('data-row');
@@ -83,7 +82,6 @@ function setHtmlTiles () {
         document_tiles[i].classList.add(tiles[rowPos][colPos].tileType);
     }
 }
-
 
 function setGameFieldSize(board, rows, cols) {
     board.style.width = (board.dataset.cellWidth * rows) + 'px';
@@ -93,13 +91,18 @@ function setGameFieldSize(board, rows, cols) {
 function initGame() {
     drawBoard();
     setUpTiles();
-    setInterval(FixedUpdate,3000);
-
+    setInterval(FixedUpdate, 2000);
+    createSerfAt(0,0);
 }
 
 
 function FixedUpdate() {
 
+    updateResources();
+    updateTurnCounter();
+}
+
+function updateResources() {
     let income = calcResourceIncomePerTurn();
     let consumption = calcResourceConsumptionPerTurn()
 
@@ -109,28 +112,34 @@ function FixedUpdate() {
     let serfsSpawned = 0;
 
     let foodConsumption = consumption[0];
-
     let foodChange = fieldIncome - foodConsumption;
-    console.log(foodChange, mountainIncome, forestIncome);
-    updateResources(foodChange,forestIncome,mountainIncome, serfsSpawned);
 
-}
 
-function updateResources(food, wood, ore, serfs) {
     let foodCounter = document.getElementById("food-counter");
     let woodCounter = document.getElementById("wood-counter");
     let oreCounter = document.getElementById("ore-counter");
     let serfCounter = document.getElementById("serf-counter");
 
-    currentFoodPool = currentFoodPool + food;
-    currentWoodPool = currentWoodPool + wood;
-    currentOrePool = currentOrePool + ore;
-    numOfSerfs = numOfSerfs + serfs;
+    currentFoodPool = currentFoodPool + foodChange;
+    if (currentFoodPool < 0) {
+        currentFoodPool = 0;
+        //Serf dies
+    }
+    currentWoodPool = currentWoodPool + forestIncome;
+    currentOrePool = currentOrePool + mountainIncome;
+    numOfSerfs = numOfSerfs + serfsSpawned;
 
-    foodCounter.innerHTML = currentFoodPool;
-    woodCounter.innerHTML = currentWoodPool;
-    oreCounter.innerHTML = currentOrePool;
-    serfCounter.innerHTML = numOfSerfs;
+    foodCounter.innerHTML = currentFoodPool.toString();
+    woodCounter.innerHTML = currentWoodPool.toString();
+    oreCounter.innerHTML = currentOrePool.toString();
+    serfCounter.innerHTML = numOfSerfs.toString();
+
+}
+
+function updateTurnCounter() {
+    turnCount++;
+    let turnCounter = document.getElementById('turn-counter');
+    turnCounter.innerHTML = turnCount.toString();
 
 }
 
@@ -152,7 +161,13 @@ function calcResourceConsumptionPerTurn() {
     return [foodConsumption];
 }
 
-
+function createSerfAt (row, col) {
+    let document_tiles = document.getElementsByClassName('tile');
+    let index = row * 5 + col;
+    let tile = document_tiles[index];
+    console.log(document_tiles);
+    tile.insertAdjacentHTML('beforeend', '<div class="serf"></div>')
+}
 
 function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovement = false, hasBuilding = false) {
     this.tileType = tileType;
@@ -160,5 +175,4 @@ function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovem
     this.hasWorker = hasWorker;
     this.hasProductionImprovement = hasProductionImprovement;
     this.hasBuilding = hasBuilding;
-
 }
