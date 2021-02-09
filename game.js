@@ -4,6 +4,7 @@ let numOfSerfs = 1;
 let currentFoodPool = 25;
 let currentWoodPool = 25;
 let currentOrePool = 25;
+let turnCount = 0;
 initGame();
 
 function drawBoard() {
@@ -100,11 +101,36 @@ function initGame() {
 function FixedUpdate() {
 
     let income = calcResourceIncomePerTurn();
-    let fieldIncome = income[0]
-    let mountainIncome = income[1]
-    let forestIncome = income[2]
+    let consumption = calcResourceConsumptionPerTurn()
 
-    console.log(fieldIncome, mountainIncome, forestIncome);
+    let fieldIncome = income[0];
+    let mountainIncome = income[1];
+    let forestIncome = income[2];
+    let serfsSpawned = 0;
+
+    let foodConsumption = consumption[0];
+
+    let foodChange = fieldIncome - foodConsumption;
+    console.log(foodChange, mountainIncome, forestIncome);
+    updateResources(foodChange,forestIncome,mountainIncome, serfsSpawned);
+
+}
+
+function updateResources(food, wood, ore, serfs) {
+    let foodCounter = document.getElementById("food-counter");
+    let woodCounter = document.getElementById("wood-counter");
+    let oreCounter = document.getElementById("ore-counter");
+    let serfCounter = document.getElementById("serf-counter");
+
+    currentFoodPool = currentFoodPool + food;
+    currentWoodPool = currentWoodPool + wood;
+    currentOrePool = currentOrePool + ore;
+    numOfSerfs = numOfSerfs + serfs;
+
+    foodCounter.innerHTML = currentFoodPool;
+    woodCounter.innerHTML = currentWoodPool;
+    oreCounter.innerHTML = currentOrePool;
+    serfCounter.innerHTML = numOfSerfs;
 
 }
 
@@ -113,9 +139,9 @@ function calcResourceIncomePerTurn() {
     let numOfWorkedMountains = document.querySelectorAll(".worked-mountain").length;
     let numOfWorkedForests = document.querySelectorAll(".worked-forest").length;
 
-    let fieldIncome = numOfWorkedFields;
-    let mountainIncome = numOfWorkedMountains;
-    let forestIncome = numOfWorkedForests;
+    let fieldIncome = numOfWorkedFields * 2;
+    let mountainIncome = numOfWorkedMountains * 2;
+    let forestIncome = numOfWorkedForests * 2;
 
     return [fieldIncome, mountainIncome, forestIncome];
 }
@@ -123,7 +149,7 @@ function calcResourceIncomePerTurn() {
 function calcResourceConsumptionPerTurn() {
     let foodConsumption = numOfSerfs;
     // let woodConsumption = numOfSerfs*3; //winter
-    return foodConsumption;
+    return [foodConsumption];
 }
 
 
