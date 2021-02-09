@@ -1,6 +1,9 @@
 let board = document.getElementById('board');
 let tiles = [];
 let numOfSerfs = 1;
+let currentFoodPool = 25;
+let currentWoodPool = 25;
+let currentOrePool = 25;
 initGame();
 
 function drawBoard() {
