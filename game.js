@@ -84,12 +84,12 @@ function setUpHtmlTiles() {
         let colPos = document_tiles[i].getAttribute('data-col');
         document_tiles[i].classList.add(tiles[rowPos][colPos].tileType);
 
-        initSerfDragAndDrop(document_tiles[i]);
+        initDragAndDrop(document_tiles[i]);
 
     }
 }
 
-function initSerfDragAndDrop(tile) {
+function initDragAndDrop(tile) {
     tile.addEventListener('dragover', dragOverTile);
     tile.addEventListener('dragenter', dragEnterTile);
     tile.addEventListener('dragleave', dragLeaveTile);
@@ -104,6 +104,7 @@ function setGameFieldSize(board, rows, cols) {
 function initGame() {
     drawBoard();
     setUpTiles();
+    initBuildingEvents();
     createSerfAt(2, 2);
     if (gameIsRunning) {
         setInterval(FixedUpdate, 2000);
@@ -125,6 +126,7 @@ function updateTurnCounter() {
 
 }
 
+//Resource
 function calcResourceIncomePerTurn() {
     let fieldIncome = 0;
     let forestIncome = 0;
@@ -190,6 +192,16 @@ function updateResourcesAndSerfs() {
 
 }
 
+//Gameplay
+
+function initBuildingEvents() {
+    let buildingIcons = document.getElementsByClassName('building');
+    for (const building of buildingIcons) {
+        building.addEventListener('dragstart', buildingDragStart);
+        building.addEventListener('dragend', buildingDragEnd);
+    }
+}
+
 function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
     let index = row * 5 + col;
@@ -222,15 +234,17 @@ function killRandomSerf() {
         let unluckySerfIndex = Math.floor(Math.random() * serfs.length);
         serfs[unluckySerfIndex].classList.add('dead');
         let serfToDelete = document.getElementsByClassName('dead')[0];
-        console.log(serfToDelete);
         serfToDelete.remove();
         serfKillCounter++;
         numOfSerfs--;
     }
 }
 
+//BUILDING function
+
+//TODO:
 function checkForGameOver() {
-    if (numOfSerfs === 0 || turnCount ) {
+    if (numOfSerfs === 0 || turnCount) {
 
         return
     }
@@ -257,29 +271,62 @@ function serfDragEnd() {
     serf.classList.remove('opaque');
 }
 
+//Building
+
+function buildingDragStart(event) {
+    event.dataTransfer.setData('text', "building");
+    let buildingType = this.getAttribute('building-type');
+    event.dataTransfer.setData('type', buildingType);
+    this.classList.add('dragged');
+    console.log(event.dataTransfer.items);
+
+}
+
+function buildingDragEnd() {
+    let building = document.querySelector('.dragged');
+    building.classList.remove('dragged');
+}
+
 //Tiles
 
 function dragOverTile(event) {
     event.preventDefault();
 }
 
-function dragEnterTile() {
+function dragEnterTile(event) {
+    event.preventDefault();
 }
 
 function dragLeaveTile() {
 }
 
 function dropOnTile(event) {
-    console.log(event.dataTransfer.getData('text'));
+    let row = this.getAttribute('data-row');
+    let col = this.getAttribute('data-col');
+    let tile = tiles[row][col]
     if (event.dataTransfer.getData('text') === 'serf') {
-        let row = this.getAttribute('data-row');
-        let col = this.getAttribute('data-col');
-        if (!tiles[row][col].hasWorker) {
+        if (!tile.hasWorker) {
             let serf = document.querySelector('.dragged');
-            console.log(tiles);
             toggleTileWorkerStatus(parentTile);
-            toggleTileWorkerStatus(tiles[row][col]);
+            toggleTileWorkerStatus(tile);
             event.currentTarget.appendChild(serf);
+        }
+    } else if (event.dataTransfer.getData('text') === 'building') {
+        let buildingType = event.dataTransfer.getData('type');
+        if (!tile.hasBuilding) {
+            if (tile.tileType === 'field') {
+                if (buildingType === 'house') {
+                    console.log('building house');
+                } else if (buildingType === 'farm') {
+                    //Building farm
+                }
+            } else if (buildingType === 'mine' && tile.tileType === 'mountain'){
+                console.log('building mine');
+            } else if (buildingType === 'woodcutter' && tile.tileType === 'forest'){
+                //Build woodcutter
+            }
+
+
         }
     }
 

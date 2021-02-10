@@ -49,6 +49,11 @@ body {
     width: 64px;
 }
 
+.building-name {
+    background-color: red;
+    text-align: center;
+    margin-top: 5px;
+}
 
 #board-holder {
     background-color: black;
@@ -100,16 +105,14 @@ body {
 }
 
 
-.dragged {
+.serf.dragged {
     border-style: solid;
+}
+.building.dragged {
+
 }
 
 .opaque {
     border-style: none;
     opacity: 0.4;
-}
-
-
-.worked {
-
 }
