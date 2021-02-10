@@ -111,7 +111,6 @@ function initGame() {
 
 }
 
-
 function FixedUpdate() {
 
     updateResourcesAndSerfs();
@@ -153,9 +152,8 @@ function calcResourceIncomePerTurn() {
 }
 
 function calcResourceConsumptionPerTurn() {
-    let foodConsumption = numOfSerfs;
     // let woodConsumption = numOfSerfs*3; //winter
-    return [foodConsumption];
+    return [numOfSerfs];
 }
 
 function updateResourcesAndSerfs() {
@@ -227,8 +225,14 @@ function killRandomSerf() {
         console.log(serfToDelete);
         serfToDelete.remove();
         serfKillCounter++;
-    } else {
-        return false;
+        numOfSerfs--;
+    }
+}
+
+function checkForGameOver() {
+    if (numOfSerfs === 0 || turnCount ) {
+
+        return
     }
 }
 
@@ -254,7 +258,6 @@ function serfDragEnd() {
 }
 
 //Tiles
-
 
 function dragOverTile(event) {
     event.preventDefault();

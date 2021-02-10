@@ -27,6 +27,25 @@
     width: 140px;
 }
 
+.building-row {
+    background-color: dimgray;
+    height:100px ;
+    margin-top: 5px;
+    width: 140px;
+}
+
+.buildables {
+    display: inline-flex;
+}
+
+.building-tab{
+    margin-left: 4px;
+    background-color: saddlebrown;
+    height: 100px;
+    width: 64px;
+}
+
+
 #board-holder {
     background-color: pink;
     float: left;
