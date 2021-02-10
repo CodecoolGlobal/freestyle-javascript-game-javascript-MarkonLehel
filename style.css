@@ -1,26 +1,30 @@
+body {
+    background-color: #828282;
+}
+
 .wrapper {
-    background-color: cyan;
+    background-color: #755303;
     margin: 50px 50px;
     height: 400px;
     width: 500px;
 }
 
 #top-bar {
-    background-color: orange;
+    background-color: #ad9d5f;
 
     height: 40px;
     width: 100%;
 }
 
 #building-text {
-    background-color: yellow;
+    background-color: #8e804b;
     float: right;
     height: 100%;
     width: 140px;
 }
 
 #building-menu {
-    background-color: blue;
+    background-color: #4bab46;
 
     float: right;
     height: 360px;
@@ -47,7 +51,7 @@
 
 
 #board-holder {
-    background-color: pink;
+    background-color: black;
     float: left;
     margin: 5px;
     height: 350px;
@@ -55,7 +59,7 @@
 }
 
 #board {
-    background-color: red;
+    background-color: #38821a;
     padding: 15px;
 }
 
@@ -65,7 +69,7 @@
 }
 
 .tile {
-    background-color: blueviolet;
+    background-color: #828282;
     width: 64px;
     height: 64px;
 }
