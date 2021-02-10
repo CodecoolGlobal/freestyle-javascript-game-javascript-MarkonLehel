@@ -106,16 +106,17 @@ function initGame() {
     setUpTiles();
     initBuildingEvents();
     createSerfAt(2, 2);
-    if (gameIsRunning) {
-        setInterval(FixedUpdate, 2000);
-    }
+    setInterval(FixedUpdate, 2000);
 
 }
 
 function FixedUpdate() {
+    if (gameIsRunning) {
+        checkForGameOver();
+        updateResourcesAndSerfs();
+        updateTurnCounter();
 
-    updateResourcesAndSerfs();
-    updateTurnCounter();
+    }
 }
 
 
@@ -127,6 +128,7 @@ function updateTurnCounter() {
 }
 
 //Resource
+//TODO: Tiles with house dont contribute to food production
 function calcResourceIncomePerTurn() {
     let fieldIncome = 0;
     let forestIncome = 0;
@@ -171,10 +173,7 @@ function updateResourcesAndSerfs() {
     let foodChange = fieldIncome - foodConsumption;
 
 
-    let foodCounter = document.getElementById("food-counter");
-    let woodCounter = document.getElementById("wood-counter");
-    let oreCounter = document.getElementById("ore-counter");
-    let serfCounter = document.getElementById("serf-counter");
+
 
     currentFoodPool = currentFoodPool + foodChange;
     if (currentFoodPool < 0) {
@@ -184,14 +183,21 @@ function updateResourcesAndSerfs() {
     currentWoodPool = currentWoodPool + forestIncome;
     currentOrePool = currentOrePool + mountainIncome;
     numOfSerfs = numOfSerfs + serfsSpawned;
+    updateResourceDisplay()
+}
+
+
+function updateResourceDisplay(){
+    let foodCounter = document.getElementById("food-counter");
+    let woodCounter = document.getElementById("wood-counter");
+    let oreCounter = document.getElementById("ore-counter");
+    let serfCounter = document.getElementById("serf-counter");
 
     foodCounter.innerHTML = currentFoodPool.toString();
     woodCounter.innerHTML = currentWoodPool.toString();
     oreCounter.innerHTML = currentOrePool.toString();
     serfCounter.innerHTML = numOfSerfs.toString();
-
 }
-
 //Gameplay
 
 function initBuildingEvents() {
@@ -240,13 +246,39 @@ function killRandomSerf() {
     }
 }
 
-//BUILDING function
+function placeBuilding (row, col, building) {
+    console.log(row,col);
+    if (currentWoodPool >= 30 && currentOrePool >= 30 && gameIsRunning){
+        let tile = tiles[row][col];
+        let docTiles = document.getElementsByClassName('tile');
+        console.log(+row * 5 + +col);
+        let buildTile = docTiles[+row * 5 + +col];
+        tile.hasBuilding = true;
+        if (building === 'house') {
+            buildTile.classList.add('house');
+        } else if (building === 'farm'){
+            buildTile.classList.add('farm');
+            tile.hasProductionImprovement = true;
+        } else if (building === 'mine'){
+            buildTile.classList.add('mine');
+            tile.hasProductionImprovement = true;
+        } else if (building === 'logger'){
+            buildTile.classList.add('logger');
+            tile.hasProductionImprovement = true;
+        }
+        currentOrePool -= 30;
+        currentWoodPool -= 30;
+        updateResourceDisplay()
+    } else {
+        //Let the user know not enough resources
+    }
+}
 
 //TODO:
 function checkForGameOver() {
-    if (numOfSerfs === 0 || turnCount) {
-
-        return
+    if (numOfSerfs === 0 || turnCount > 140) {
+        alert('Game Over!');
+        gameIsRunning = false;
     }
 }
 
@@ -304,6 +336,7 @@ function dropOnTile(event) {
     let row = this.getAttribute('data-row');
     let col = this.getAttribute('data-col');
     let tile = tiles[row][col]
+    //If serf
     if (event.dataTransfer.getData('text') === 'serf') {
         if (!tile.hasWorker) {
             let serf = document.querySelector('.dragged');
@@ -311,20 +344,11 @@ function dropOnTile(event) {
             toggleTileWorkerStatus(tile);
             event.currentTarget.appendChild(serf);
         }
+        //If building
     } else if (event.dataTransfer.getData('text') === 'building') {
         let buildingType = event.dataTransfer.getData('type');
         if (!tile.hasBuilding) {
-            if (tile.tileType === 'field') {
-                if (buildingType === 'house') {
-                    console.log('building house');
-                } else if (buildingType === 'farm') {
-                    //Building farm
-                }
-            } else if (buildingType === 'mine' && tile.tileType === 'mountain'){
-                console.log('building mine');
-            } else if (buildingType === 'woodcutter' && tile.tileType === 'forest'){
-                //Build woodcutter
-            }
+            placeBuilding(row,col,buildingType);
 
 
         }
