@@ -1,12 +1,13 @@
 let board = document.getElementById('board');
 let tiles = [];
 let numOfSerfs = 1;
-let currentFoodPool = 25;
+let currentFoodPool = 5;
 let currentWoodPool = 25;
 let currentOrePool = 25;
 let turnCount = 0;
 let isWinter = false;
 let gameIsRunning = true;
+let serfKillCounter = 0;
 initGame();
 
 function drawBoard() {
@@ -89,10 +90,10 @@ function setUpHtmlTiles() {
 }
 
 function initSerfDragAndDrop(tile) {
-    tile.addEventListener('dragover', dragOverSerf);
-    tile.addEventListener('dragenter', dragEnterSerf);
-    tile.addEventListener('dragleave', dragLeaveSerf);
-    tile.addEventListener('drop', dropSerf);
+    tile.addEventListener('dragover', dragOverTile);
+    tile.addEventListener('dragenter', dragEnterTile);
+    tile.addEventListener('dragleave', dragLeaveTile);
+    tile.addEventListener('drop', dropOnTile);
 }
 
 function setGameFieldSize(board, rows, cols) {
@@ -103,19 +104,19 @@ function setGameFieldSize(board, rows, cols) {
 function initGame() {
     drawBoard();
     setUpTiles();
+    createSerfAt(2, 2);
     if (gameIsRunning) {
         setInterval(FixedUpdate, 2000);
     }
-    createSerfAt(2, 2);
+
 }
 
 
 function FixedUpdate() {
 
-    updateResources();
+    updateResourcesAndSerfs();
     updateTurnCounter();
 }
-
 
 
 function updateTurnCounter() {
@@ -157,7 +158,7 @@ function calcResourceConsumptionPerTurn() {
     return [foodConsumption];
 }
 
-function updateResources() {
+function updateResourcesAndSerfs() {
     let income = calcResourceIncomePerTurn();
     let consumption = calcResourceConsumptionPerTurn()
 
@@ -178,7 +179,7 @@ function updateResources() {
     currentFoodPool = currentFoodPool + foodChange;
     if (currentFoodPool < 0) {
         currentFoodPool = 0;
-        //Serf dies
+        killRandomSerf();
     }
     currentWoodPool = currentWoodPool + forestIncome;
     currentOrePool = currentOrePool + mountainIncome;
@@ -190,6 +191,7 @@ function updateResources() {
     serfCounter.innerHTML = numOfSerfs.toString();
 
 }
+
 function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
     let index = row * 5 + col;
@@ -216,17 +218,32 @@ function toggleTileWorkerStatus(tile) {
 
 }
 
+function killRandomSerf() {
+    let serfs = document.getElementsByClassName('serf');
+    if (serfs.length !== 0) {
+        let unluckySerfIndex = Math.floor(Math.random() * serfs.length);
+        serfs[unluckySerfIndex].classList.add('dead');
+        let serfToDelete = document.getElementsByClassName('dead')[0];
+        console.log(serfToDelete);
+        serfToDelete.remove();
+        serfKillCounter++;
+    } else {
+        return false;
+    }
+}
 
 //Dragging stuff
 //Serf
 let parentTile;
 
-function serfDragStart(e) {
+function serfDragStart(event) {
+    event.dataTransfer.setData('text', "serf");
     this.classList.add('dragged');
     setTimeout(() => (this.classList.add('opaque')), 0);
     let row = this.parentNode.getAttribute('data-row');
     let col = this.parentNode.getAttribute('data-col');
     parentTile = tiles[row][col];
+
 }
 
 
@@ -236,30 +253,31 @@ function serfDragEnd() {
     serf.classList.remove('opaque');
 }
 
-//Tile Serf
+//Tiles
 
 
-function dragOverSerf(e) {
-    e.preventDefault();
+function dragOverTile(event) {
+    event.preventDefault();
 }
 
-function dragEnterSerf() {
+function dragEnterTile() {
 }
 
-function dragLeaveSerf() {
+function dragLeaveTile() {
 }
 
-function dropSerf(e) {
-    console.log(this);
-
-    let row = this.getAttribute('data-row');
-    let col = this.getAttribute('data-col');
-    if (!tiles[row][col].hasWorker) {
-        let serf = document.querySelector('.dragged');
-        console.log(tiles);
-        toggleTileWorkerStatus(parentTile);
-        toggleTileWorkerStatus(tiles[row][col]);
-        e.currentTarget.appendChild(serf);
+function dropOnTile(event) {
+    console.log(event.dataTransfer.getData('text'));
+    if (event.dataTransfer.getData('text') === 'serf') {
+        let row = this.getAttribute('data-row');
+        let col = this.getAttribute('data-col');
+        if (!tiles[row][col].hasWorker) {
+            let serf = document.querySelector('.dragged');
+            console.log(tiles);
+            toggleTileWorkerStatus(parentTile);
+            toggleTileWorkerStatus(tiles[row][col]);
+            event.currentTarget.appendChild(serf);
+        }
     }
 
 }
