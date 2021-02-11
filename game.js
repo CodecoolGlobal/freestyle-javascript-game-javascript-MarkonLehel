@@ -1,10 +1,10 @@
 let board = document.getElementById('board');
 let tiles = [];
 let numOfSerfs = 1;
-let currentFoodPool = 999;
+let currentFoodPool = 5;
 let currentWoodPool = 25;
 let currentOrePool = 25;
-let turnCount = 0;
+let turnCount = 96;
 let isWinter = false;
 let turnToWinter = 100;
 let gameIsRunning = true;
@@ -117,6 +117,7 @@ function initGame() {
 
 }
 
+
 //Winter
 function changeToWinter() {
     let tiles = document.getElementsByClassName('tile');
@@ -149,6 +150,7 @@ function updateTurn() {
     }
 
 }
+
 
 //Resource
 //TODO: Tiles with house dont contribute to food production
@@ -267,7 +269,6 @@ function updateResourceDisplay() {
     oreCounter.innerHTML = currentOrePool.toString();
     serfCounter.innerHTML = numOfSerfs.toString();
 }
-
 //Gameplay
 
 function initBuildingEvents() {
@@ -282,7 +283,6 @@ function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
     let index = row * 5 + col;
     let tile = document_tiles[index];
-    console.log(document_tiles);
     tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
     let serfObject = document_tiles[index].childNodes[0]
     serfObject.addEventListener('dragstart', serfDragStart);
@@ -347,12 +347,71 @@ function placeBuilding(row, col, building) {
     }
 }
 
+
+//Scoreboard and endgame things
+function scoreBoard() {
+    let scoreBoard = document.getElementById('scoreboard')
+    const toInsert = "<table class='table table-striped table-dark' style='width: 70%;'>\n" +
+        "            <thead>\n" +
+        "                <tr>\n" +
+        "                    <th scope='col'></th>\n" +
+        "                    <th scope='col'>Food</th>\n" +
+        "                    <th scope='col'>Wood</th>\n" +
+        "                    <th scope='col'>Ore</th>\n" +
+        "                    <th scope='col'>Serfs</th>\n" +
+        "                    <th scope='col'>Killed serfs</th>\n" +
+        "                    <th scope='col'>Turns</th>\n" +
+        "                </tr>\n" +
+        "            </thead>\n" +
+        "            <tbody>\n" +
+        "                <tr>\n" +
+        "                    <th scope='row'>Statistics</th>\n" +
+        "                    <td id='food'></td>\n" +
+        "                    <td id='wood'></td>\n" +
+        "                    <td id='ore'></td>\n" +
+        "                    <td id='serfs'></td>\n" +
+        "                    <td id='killed_serfs'></td>\n" +
+        "                    <td id='turns'></td>\n" +
+        "                </tr>\n" +
+        "            </tbody>\n" +
+        "        </table>\n" +
+        "        <table class='table table-striped table-dark' style='width: 30%;'>\n" +
+        "           <tbody>\n" +
+        "               <tr>\n" +
+        "               <th scope='row'>Score</th>\n" +
+        "               <td id='score'></td>\n" +
+        "               </tr>\n" +
+        "           </tbody>\n" +
+        "        </table>"
+    scoreBoard.insertAdjacentHTML("beforeend", toInsert);
+
+    let food = document.getElementById('food')
+    let wood = document.getElementById('wood')
+    let ore = document.getElementById('ore')
+    let serfs = document.getElementById('serfs')
+    let turns = document.getElementById('turns')
+    let killedSerfs = document.getElementById('killed_serfs')
+    let score = document.getElementById('score')
+    food.innerHTML = currentFoodPool+1;
+    wood.innerHTML = currentWoodPool;
+    ore.innerHTML = currentOrePool;
+    serfs.innerHTML = numOfSerfs;
+    killedSerfs.innerHTML = serfKillCounter;
+    turns.innerHTML = turnCount+1;
+    // Add the buildings number to this
+    score.innerHTML = (numOfSerfs * 10 + currentOrePool + currentWoodPool + currentFoodPool)
+
+}
+
+//TODO:
 function checkForGameOver() {
     if (numOfSerfs === 0 || turnCount > 140) {
         alert('Game Over!');
         gameIsRunning = false;
+        scoreBoard();
     }
 }
+
 
 //Dragging stuff
 //Serf
@@ -375,6 +434,7 @@ function serfDragEnd() {
     serf.classList.remove('opaque');
 }
 
+
 //Building
 
 function buildingDragStart(event) {
@@ -393,6 +453,7 @@ function buildingDragEnd() {
     let building = document.querySelector('.dragged');
     building.classList.remove('dragged');
 }
+
 
 //Tiles
 
