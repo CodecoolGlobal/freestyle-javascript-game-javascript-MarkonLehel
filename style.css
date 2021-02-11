@@ -11,21 +11,30 @@ body {
 
 #top-bar {
     background-color: #ad9d5f;
-
+    font-size: 13px;
     height: 40px;
     width: 100%;
+}
+
+#resource-bar {
+    padding-top: 5px;
+    padding-left: 5px;
 }
 
 #building-text {
     background-color: #8e804b;
     float: right;
+
     height: 100%;
     width: 140px;
+}
+#building-text.p{
+    margin-left:20px;
+
 }
 
 #building-menu {
     background-color: #4bab46;
-
     float: right;
     height: 360px;
     width: 140px;
@@ -111,6 +120,20 @@ body {
 .building.dragged {
 
 }
+.resource-income-num {
+    float:right;
+    text-align: center;
+    color: blue;
+    margin-top: 10px;
+    opacity: 1;
+}
+.resource-income-num.float {
+    margin-top: 0px;
+    opacity: 0;
+    transition: margin-top 1.5s,
+                opacity 1.8s;
+}
+
 
 .opaque {
     border-style: none;

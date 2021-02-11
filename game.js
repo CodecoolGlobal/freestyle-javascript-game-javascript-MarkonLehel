@@ -115,7 +115,6 @@ function FixedUpdate() {
         checkForGameOver();
         updateResourcesAndSerfs();
         updateTurnCounter();
-
     }
 }
 
@@ -134,19 +133,30 @@ function calcResourceIncomePerTurn() {
     let forestIncome = 0;
     let mountainIncome = 0;
 
-    for (const row of tiles) {
+    for (let row = 0; row < tiles.length; row++) {
         {
-            for (const tile of row) {
+            for (let col = 0; col < tiles.length; col++) {
                 {
-                    if (tile.hasWorker) {
+                    let tile = tiles[row][col];
+                    if (tile.hasWorker && tile.tileType !== 'village') {
+                        let tileIncome = 0;
+                        let htmlTile = document.getElementsByClassName('tile')[+row * 5 + +col];
+                        let popupMessage = document.createElement('p');
+                        popupMessage.classList.add("resource-income-num");
                         if (tile.tileType === 'field') {
-                            fieldIncome += tile.resourceAmount + (tile.hasProductionImprovement * 2)
-
+                            tileIncome = tile.resourceAmount + (tile.hasProductionImprovement * 2);
+                            fieldIncome +=  tileIncome;
                         } else if (tile.tileType === 'forest') {
-                            forestIncome += tile.resourceAmount + (tile.hasProductionImprovement * 2)
+                            tileIncome = tile.resourceAmount + (tile.hasProductionImprovement * 2);
+                            forestIncome += tileIncome;
                         } else if (tile.tileType === 'mountain') {
-                            mountainIncome += tile.resourceAmount + (tile.hasProductionImprovement * 2)
+                            tileIncome = tile.resourceAmount + (tile.hasProductionImprovement * 2);
+                            mountainIncome += tileIncome;
                         }
+                        popupMessage.innerHTML = `+${tileIncome}`;
+                        htmlTile.prepend(popupMessage);
+                        setTimeout(() => (popupMessage.classList.add('float')), 0);
+                        setTimeout(() => (htmlTile.childNodes[0].remove()), 1900);
                     }
                 }
             }
@@ -306,6 +316,9 @@ function serfDragEnd() {
 //Building
 
 function buildingDragStart(event) {
+    let dragImage = new Image();
+    dragImage.src = 'Sprites/BuildIcon.png';
+    event.dataTransfer.setDragImage(dragImage, 0,0);
     event.dataTransfer.setData('text', "building");
     let buildingType = this.getAttribute('building-type');
     event.dataTransfer.setData('type', buildingType);
