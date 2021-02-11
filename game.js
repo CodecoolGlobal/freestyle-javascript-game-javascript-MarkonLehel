@@ -233,31 +233,46 @@ function createSerfAt(row, col) {
 }
 
 function getHouses() {
+    //get house tiles
+    let houseTiles = document.getElementsByClassName('house');
+    for (const houseTile of houseTiles) {
+        //console.log(houseTile)
+    }
+
+    //get houses
     let houses = [];
     for (let row = 0; row < tiles.length; row++) {
         {
             for (let col = 0; col < tiles.length; col++) {
                 {
-                    //let houseIndex = 0;
                     let tile = tiles[row][col];
                     if (tile.tileType === "field" && tile.hasBuilding) {
                         let houseCoords = [[row],[col]];
                         houses.push(houseCoords);
-                        //houseIndex++;
-
                     }
                 }
             }
         }
     }
-    for (const coords of houses) {
-        console.log(`house at: ${coords}`);
-    }
+    // for (const coords of houses) {
+    //     console.log(`house at: ${coords}`);
+    // }
     return houses;
 }
 
-function spawnSerf() {
+function selectRandomHouse() {
     let houses = getHouses();
+    let random = Math.floor(Math.random()*houses.length);
+    let randomHouse = houses[random];
+    console.log(`random house: ${randomHouse}`);
+}
+
+function spawnSerf() {
+    selectRandomHouse();
+    // let houses = getHouses();
+    // for (const coords of houses) {
+    //     console.log(`house at: ${coords}`);
+    // }
 
 
 }
