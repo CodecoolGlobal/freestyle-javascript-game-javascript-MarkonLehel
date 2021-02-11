@@ -2,11 +2,11 @@ let board = document.getElementById('board');
 let tiles = [];
 
 let numOfSerfs = 0;
-let currentFoodPool = 999;
-let currentWoodPool = 100;
-let currentOrePool = 100;
+let currentFoodPool = 20;
+let currentWoodPool = 50;
+let currentOrePool = 50;
 
-let turnCount = 99;
+let turnCount = 98;
 
 let isWinter = false;
 let turnToWinter = 100;
@@ -200,7 +200,7 @@ function calcResourceIncomePerTurn() {
                         }
                         popupMessage.innerHTML = `+${tileIncome}`;
                         htmlTile.prepend(popupMessage);
-                        setTimeout(() => (popupMessage.classList.add('float')), 0);
+                        setTimeout(() => (popupMessage.classList.add('float')), 10);
                         setTimeout(() => (htmlTile.childNodes[0].remove()), 1900);
                     }
                 }
@@ -220,7 +220,6 @@ function calcResourceConsumptionPerTurn() {
 function updateResourcesAndSerfs() {
     calcResourceIncomePerTurn()
     let consumption = calcResourceConsumptionPerTurn()
-    let serfsSpawned = 0;
     let foodConsumption = consumption[0];
     let woodConsumption = consumption[1];
     foodChange = fieldIncome - foodConsumption;
