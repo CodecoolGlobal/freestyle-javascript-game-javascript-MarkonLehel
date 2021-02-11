@@ -146,20 +146,61 @@ body {
     background-image: url("Sprites/FarmTile.png");
 }
 
+.tile.field.house {
+    background-image: url("Sprites/HouseTile.png");
+}
+
+.tile.field.winter {
+    background-image: url("Sprites/FieldWinter.png");
+}
+
+.tile.field.farm.winter {
+    background-image: url("Sprites/FarmTileWinter.png");
+}
+
+.tile.field.house.winter {
+    background-image: url("Sprites/HouseTileWinter.png");
+}
+
 .tile.mountain {
     background-image: url("Sprites/MountainTile.png");
+}
+
+.tile.mountain.winter {
+    background-image: url("Sprites/MountainTileWinter.png");
+}
+
+.tile.mountain.mine {
+    background-image: url("Sprites/MineTile.png");
+}
+
+.tile.mountain.mine.winter {
+    background-image: url("Sprites/MineTileWinter.png");
 }
 
 .tile.forest {
     background-image: url("Sprites/Forest.png");
 }
 
+.tile.forest.winter {
+    background-image: url("Sprites/ForestWinter.png");
+}
+
 .tile.forest.logger {
 background-image: url("Sprites/LoggerTile.png");
 }
 
+.tile.forest.logger.winter {
+background-image: url("Sprites/LoggerTileWinter.png");
+}
+
+
 .tile.village {
     background-image: url("Sprites/Village.png");
+}
+
+.tile.village.winter {
+    background-image: url("Sprites/VillageWinter.png");
 }
 
 .serf {

@@ -6,7 +6,7 @@ let currentFoodPool = 999;
 let currentWoodPool = 100;
 let currentOrePool = 100;
 
-let turnCount = 139;
+let turnCount = 99;
 
 let isWinter = false;
 let turnToWinter = 100;
@@ -132,7 +132,7 @@ function changeToWinter() {
     let serfs = document.getElementsByClassName('serf');
     winterTransitionImage.classList.add('going');
 
-    setTimeout(() => (setWinterAttributes()), 700);
+    setTimeout(() => (setWinterAttributes()), 600);
 
     function setWinterAttributes() {
         for (const tile of tiles) {
@@ -179,9 +179,10 @@ function calcResourceIncomePerTurn() {
             for (let col = 0; col < tiles.length; col++) {
                 {
                     let tile = tiles[row][col];
-                    if (tile.hasWorker && tile.tileType !== 'village') {
+                    let htmlTile = document.getElementsByClassName('tile')[+row * 5 + +col];
+                    if (tile.hasWorker && tile.tileType !== 'village' && !htmlTile.classList.contains('house')) {
                         let tileIncome = 0;
-                        let htmlTile = document.getElementsByClassName('tile')[+row * 5 + +col];
+
                         let popupMessage = document.createElement('p');
                         popupMessage.classList.add("resource-income-num");
                         if (tile.tileType === 'field') {
@@ -347,9 +348,8 @@ function getHouses() {
 function selectRandomHouse() {
     let houses = getHouses();
     let random = Math.floor(Math.random() * houses.length);
-    let randomHouse = houses[random];
     //console.log(`random house: ${randomHouse}`);
-    return randomHouse;
+    return houses[random];
 }
 
 function spawnAdditionalSerf() {
@@ -382,6 +382,9 @@ function killRandomSerf() {
     if (serfs.length !== 0) {
         let unluckySerfIndex = Math.floor(Math.random() * serfs.length);
         serfs[unluckySerfIndex].classList.add('dead');
+        let row = serfs[unluckySerfIndex].parentElement.getAttribute('data-row');
+        let col = serfs[unluckySerfIndex].parentElement.getAttribute('data-col');
+        toggleTileWorkerStatus(tiles[row][col]);
         let serfToDelete = document.getElementsByClassName('dead')[0];
         serfToDelete.remove();
         serfKillCounter++;
@@ -439,6 +442,7 @@ function scoreBoard() {
         "                    <th scope='col'>Serfs</th>\n" +
         "                    <th scope='col'>Killed serfs</th>\n" +
         "                    <th scope='col'>Turns</th>\n" +
+        "                    <th scope='col'>Buildings built</th>\n" +
         "                </tr>\n" +
         "            </thead>\n" +
         "            <tbody>\n" +
@@ -450,6 +454,7 @@ function scoreBoard() {
         "                    <td id='serfs'></td>\n" +
         "                    <td id='killed_serfs'></td>\n" +
         "                    <td id='turns'></td>\n" +
+        "                    <td id='built-buildings'></td>\n" +
         "                </tr>\n" +
         "            </tbody>\n" +
         "        </table>\n" +
@@ -469,25 +474,34 @@ function scoreBoard() {
     let serfs = document.getElementById('serfs')
     let turns = document.getElementById('turns')
     let killedSerfs = document.getElementById('killed_serfs')
+    let buildings = document.getElementById('built-buildings')
     let score = document.getElementById('score')
-    food.innerHTML = currentFoodPool + 1;
+    food.innerHTML = currentFoodPool;
     wood.innerHTML = currentWoodPool;
     ore.innerHTML = currentOrePool;
     serfs.innerHTML = numOfSerfs;
     killedSerfs.innerHTML = serfKillCounter;
-    turns.innerHTML = turnCount + 1;
-    // Add the buildings number to this
-    score.innerHTML = (numOfSerfs * 10 + currentOrePool + currentWoodPool + currentFoodPool)
+    let builtBuilings = 0;
+    for (const row of tiles) {
+        for (const tile of row) {
+            if (tile.hasBuilding) {
+                builtBuilings++;
+            }
+        }
+    }
+    console.log(builtBuilings);
+    buildings.innerHTML = builtBuilings - 1;
+    turns.innerHTML = turnCount;
+    score.innerHTML = (numOfSerfs * 10 + currentOrePool + currentWoodPool + currentFoodPool + (builtBuilings *5 ))
 
 }
 
-//TODO:
 function checkForGameOver() {
     if (numOfSerfs === 0) {
         alert('Game Over!');
         gameIsRunning = false;
         scoreBoard();
-    } else if (turnCount >= 140) {
+    } else if (turnCount >= 139) {
         gameIsRunning = false;
         scoreBoard();
         win()
