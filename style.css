@@ -1,24 +1,73 @@
 body {
-    background-color: #828282;
+    background-color: tan;
 }
 
 .wrapper {
+    position: relative;
+    overflow: hidden;
     background-color: #755303;
-    margin: 50px 50px;
+    margin: 50px 50px 50px 50px;
     height: 400px;
     width: 500px;
 }
 
+#winter-transition {
+    position: absolute;
+    margin-top: -450px;
+    z-index: 100;
+}
+#winter-transition.going{
+    margin-top: 450px;
+    transition: margin-top 2s;
+}
+
 #top-bar {
     background-color: #ad9d5f;
-    font-size: 13px;
+    font-size: 12px;
     height: 40px;
     width: 100%;
 }
 
 #resource-bar {
-    padding-top: 5px;
+    display: inline-flex;
+    padding-top: 4px;
+    padding-left: 2px;
+}
+
+.resource {
+    width: 74px;
+    height: 32px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+    margin-left: -1px;
+    display: inline-flex;
     padding-left: 5px;
+}
+
+.resource-pool {
+    margin-left: 2px;
+    margin-top: 4px;
+    padding-left: 2px;
+    display: inline-block;
+    line-height: 2px;
+    height: 22px;
+    width: 21px;
+    border-left-style: solid;
+    border-left-width: 1px;
+
+}
+
+.resource.serf-bar {
+    width: 65px;
+}
+
+#ore-income, #wood-income, #food-income {
+    color: #38821a;
+}
+
+#ore-income.negative, #wood-income.negative, #food-income.negative {
+    color: firebrick;
 }
 
 #building-text {
@@ -28,8 +77,9 @@ body {
     height: 100%;
     width: 140px;
 }
-#building-text.p{
-    margin-left:20px;
+
+#building-text.p {
+    margin-left: 20px;
 
 }
 
@@ -42,7 +92,7 @@ body {
 
 .building-row {
     background-color: dimgray;
-    height:100px ;
+    height: 100px;
     margin-top: 5px;
     width: 140px;
 }
@@ -51,7 +101,7 @@ body {
     display: inline-flex;
 }
 
-.building-tab{
+.building-tab {
     margin-left: 4px;
     background-color: saddlebrown;
     height: 100px;
@@ -92,12 +142,20 @@ body {
     background-image: url("Sprites/Field.png");
 }
 
+.tile.field.farm {
+    background-image: url("Sprites/FarmTile.png");
+}
+
 .tile.mountain {
     background-image: url("Sprites/MountainTile.png");
 }
 
 .tile.forest {
     background-image: url("Sprites/Forest.png");
+}
+
+.tile.forest.logger {
+background-image: url("Sprites/LoggerTile.png");
 }
 
 .tile.village {
@@ -113,29 +171,86 @@ body {
     background-image: url('Sprites/SummerVillagerDefault.png');
 }
 
+.serf.winter {
+
+    background-image: url('Sprites/WinterVillagerDefault.png');
+}
+
 
 .serf.dragged {
     border-style: solid;
 }
+
 .building.dragged {
 
 }
+
 .resource-income-num {
-    float:right;
+    float: right;
     text-align: center;
     color: blue;
     margin-top: 10px;
     opacity: 1;
 }
+
 .resource-income-num.float {
     margin-top: 0px;
     opacity: 0;
     transition: margin-top 1.5s,
-                opacity 1.8s;
+    opacity 1.8s;
 }
-
 
 .opaque {
     border-style: none;
     opacity: 0.4;
+}
+
+.btn-gradient.green {
+	background: rgba(130,200,160,1);
+	background: -moz-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+	background: -webkit-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+	background: -o-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+	background: -ms-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+	background: linear-gradient(to bottom, rgba(130,200,160,1) 0%, rgba(124, 185, 149, 1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#82c8a0', endColorstr='#82c79e', GradientType=0 );
+}
+
+a:link {
+  text-decoration: none;
+    color: #444343
+}
+
+a:visited {
+  text-decoration: none;
+    color: #444343
+}
+
+a:hover {
+  text-decoration: none;
+    color: #2a2929
+}
+
+a:active {
+  text-decoration: none;
+    color: #000000
+}
+
+.color .green  {background: #82c8a0;}
+
+.btn-gradient.green:active  {background: #72B08E;}
+
+.rounded {
+  border-radius: 10px;
+}
+
+.btn-gradient {
+	margin: 5px;
+}
+
+.btn.mini,
+.btn-two.mini,
+.btn-gradient.mini,
+.btn-effect.mini {
+  padding: 4px 12px;
+  font-size: 12px;
 }
