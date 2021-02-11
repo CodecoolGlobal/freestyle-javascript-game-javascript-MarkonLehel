@@ -4,8 +4,9 @@ let numOfSerfs = 1;
 let currentFoodPool = 5;
 let currentWoodPool = 25;
 let currentOrePool = 25;
-let turnCount = 0;
+let turnCount = 96;
 let isWinter = false;
+let turnToWinter = 100;
 let gameIsRunning = true;
 let serfKillCounter = 0;
 initGame();
@@ -110,6 +111,18 @@ function initGame() {
 
 }
 
+//Winter
+function changeToWinter() {
+    let tiles = document.getElementsByClassName('tile')
+    for (const tile of tiles) {
+        if (!tile.classList.contains('winter')) {
+            console.log('fut')
+            tile.classList.add('winter')
+        }
+    }
+}
+
+
 function FixedUpdate() {
     if (gameIsRunning) {
         checkForGameOver();
@@ -123,6 +136,10 @@ function updateTurnCounter() {
     turnCount++;
     let turnCounter = document.getElementById('turn-counter');
     turnCounter.innerHTML = turnCount.toString();
+    if (turnCount >= turnToWinter) {
+        isWinter = true;
+        changeToWinter()
+    }
 
 }
 
@@ -145,12 +162,15 @@ function calcResourceIncomePerTurn() {
                         popupMessage.classList.add("resource-income-num");
                         if (tile.tileType === 'field') {
                             tileIncome = tile.resourceAmount + (tile.hasProductionImprovement * 2);
+                            if (isWinter) {tileIncome--}
                             fieldIncome +=  tileIncome;
                         } else if (tile.tileType === 'forest') {
                             tileIncome = tile.resourceAmount + (tile.hasProductionImprovement * 2);
+                            if (isWinter) {tileIncome--}
                             forestIncome += tileIncome;
                         } else if (tile.tileType === 'mountain') {
                             tileIncome = tile.resourceAmount + (tile.hasProductionImprovement * 2);
+                            if (isWinter) {tileIncome--}
                             mountainIncome += tileIncome;
                         }
                         popupMessage.innerHTML = `+${tileIncome}`;
@@ -180,15 +200,16 @@ function updateResourcesAndSerfs() {
     let serfsSpawned = 0;
 
     let foodConsumption = consumption[0];
-    let foodChange = fieldIncome - foodConsumption;
-
-
+    let foodChange = fieldIncome + 1 - foodConsumption;
 
 
     currentFoodPool = currentFoodPool + foodChange;
     if (currentFoodPool < 0) {
         currentFoodPool = 0;
         killRandomSerf();
+    }
+    if (isWinter) {
+        forestIncome = forestIncome-3
     }
     currentWoodPool = currentWoodPool + forestIncome;
     currentOrePool = currentOrePool + mountainIncome;
@@ -222,7 +243,6 @@ function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
     let index = row * 5 + col;
     let tile = document_tiles[index];
-    console.log(document_tiles);
     tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
     let serfObject = document_tiles[index].childNodes[0]
     serfObject.addEventListener('dragstart', serfDragStart);
