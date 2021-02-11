@@ -1,14 +1,19 @@
 let board = document.getElementById('board');
 let tiles = [];
+
 let numOfSerfs = 1;
-let currentFoodPool = 5;
-let currentWoodPool = 25;
-let currentOrePool = 25;
-let turnCount = 96;
+let currentFoodPool = 999;
+let currentWoodPool = 100;
+let currentOrePool = 100;
+
+let turnCount = 99;
+
 let isWinter = false;
 let turnToWinter = 100;
 let gameIsRunning = true;
+
 let serfKillCounter = 0;
+
 let fieldIncome = 0;
 let forestIncome = 0;
 let mountainIncome = 0;
@@ -120,14 +125,21 @@ function initGame() {
 
 //Winter
 function changeToWinter() {
+    let winterTransitionImage = document.getElementById('winter-transition');
     let tiles = document.getElementsByClassName('tile');
     let serfs = document.getElementsByClassName('serf');
-    for (const tile of tiles) {
+    winterTransitionImage.classList.add('going');
+
+    setTimeout(() => (setWinterAttributes()), 700);
+    function setWinterAttributes() {
+        for (const tile of tiles) {
         tile.classList.add('winter');
     }
     for (const serf of serfs) {
         serf.classList.add('winter');
     }
+    }
+
 }
 
 
@@ -153,7 +165,6 @@ function updateTurn() {
 
 
 //Resource
-//TODO: Tiles with house dont contribute to food production
 function calcResourceIncomePerTurn() {
     fieldIncome = 0;
     forestIncome = 0;
@@ -209,10 +220,10 @@ function updateResourcesAndSerfs() {
     let woodConsumption = consumption[1];
     foodChange = fieldIncome - foodConsumption;
     woodChange = forestIncome - woodConsumption;
-
+    console.log(foodChange,woodChange);
 
     currentFoodPool = currentFoodPool + foodChange;
-    currentWoodPool = currentWoodPool + forestIncome;
+    currentWoodPool = currentWoodPool + woodChange;
     currentOrePool = currentOrePool + mountainIncome;
     if (currentFoodPool < 0) {
         currentFoodPool = 0;
@@ -239,9 +250,14 @@ function updateResourceDisplay() {
     let woodIncomeCounter = document.getElementById("wood-income");
     let oreIncomeCounter = document.getElementById("ore-income");
 
+    let woodChangeMessage = woodChange;
+    let foodChangeMessage = foodChange;
+    let mountainIncomeMessage = mountainIncome;
+
+
     if (foodChange >= 0) {
         if (foodChange !== 0) {
-            foodChange = '+' + foodChange;
+            foodChangeMessage = '+' + foodChange;
         }
         foodIncomeCounter.classList.remove('negative')
     } else {
@@ -249,7 +265,7 @@ function updateResourceDisplay() {
     }
     if (woodChange >= 0) {
         if (woodChange !== 0) {
-            woodChange = '+' + woodChange
+            woodChangeMessage = '+' + woodChange
         }
         woodIncomeCounter.classList.remove('negative')
     } else {
@@ -257,12 +273,12 @@ function updateResourceDisplay() {
     }
 
     if (mountainIncome !== 0) {
-        mountainIncome = '+' + mountainIncome;
+        mountainIncomeMessage = '+' + mountainIncome;
     }
 
-    oreIncomeCounter.innerHTML = mountainIncome;
-    woodIncomeCounter.innerHTML = woodChange;
-    foodIncomeCounter.innerHTML = foodChange;
+    oreIncomeCounter.innerHTML = mountainIncomeMessage;
+    woodIncomeCounter.innerHTML = woodChangeMessage;
+    foodIncomeCounter.innerHTML = foodChangeMessage;
 
     foodCounter.innerHTML = currentFoodPool.toString();
     woodCounter.innerHTML = currentWoodPool.toString();
@@ -323,17 +339,20 @@ function placeBuilding(row, col, building) {
         let docTiles = document.getElementsByClassName('tile');
         console.log(+row * 5 + +col);
         let buildTile = docTiles[+row * 5 + +col];
-        tile.hasBuilding = true;
         if (building === 'house' && tile.tileType === 'field') {
             buildTile.classList.add('house');
+            tile.hasBuilding = true;
         } else if (building === 'farm' && tile.tileType === 'field') {
             buildTile.classList.add('farm');
+            tile.hasBuilding = true;
             tile.hasProductionImprovement = true;
         } else if (building === 'mine' && tile.tileType === 'mountain') {
             buildTile.classList.add('mine');
+            tile.hasBuilding = true;
             tile.hasProductionImprovement = true;
         } else if (building === 'logger' && tile.tileType === 'forest') {
             buildTile.classList.add('logger');
+            tile.hasBuilding = true;
             tile.hasProductionImprovement = true;
         }
         if (tile.hasBuilding) {

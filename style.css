@@ -1,12 +1,24 @@
 body {
-    background-color: #828282;
+    background-color: tan;
 }
 
 .wrapper {
+    position: relative;
+    overflow: hidden;
     background-color: #755303;
     margin: 50px 50px 50px 50px;
     height: 400px;
     width: 500px;
+}
+
+#winter-transition {
+    position: absolute;
+    margin-top: -450px;
+    z-index: 100;
+}
+#winter-transition.going{
+    margin-top: 450px;
+    transition: margin-top 2s;
 }
 
 #top-bar {
@@ -36,8 +48,9 @@ body {
 .resource-pool {
     margin-left: 2px;
     margin-top: 4px;
+    padding-left: 2px;
     display: inline-block;
-    line-height: 11px;
+    line-height: 2px;
     height: 22px;
     width: 21px;
     border-left-style: solid;
@@ -141,6 +154,10 @@ body {
     background-image: url("Sprites/Forest.png");
 }
 
+.tile.forest.logger {
+background-image: url("Sprites/LoggerTile.png");
+}
+
 .tile.village {
     background-image: url("Sprites/Village.png");
 }
@@ -191,7 +208,6 @@ body {
 .btn-gradient.green {
 	background: rgba(130,200,160,1);
 	background: -moz-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
-	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(130,200,160,1)), color-stop(100%, rgba(130,199,158,1)));
 	background: -webkit-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
 	background: -o-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
 	background: -ms-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
