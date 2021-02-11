@@ -134,8 +134,9 @@ body {
                 opacity 1.8s;
 }
 
-
 .opaque {
     border-style: none;
     opacity: 0.4;
 }
+
+

@@ -204,11 +204,13 @@ function updateResourcesAndSerfs() {
 
 
     currentFoodPool = currentFoodPool + foodChange;
-    if (currentFoodPool < 0) {
+    if (currentFoodPool <= 0) {
         currentFoodPool = 0;
         killRandomSerf();
-    }
-    if (isWinter) {
+    } else if (currentWoodPool <= 0) {
+        currentWoodPool = 0;
+        killRandomSerf();
+    } else if (isWinter) {
         forestIncome = forestIncome-3
     }
     currentWoodPool = currentWoodPool + forestIncome;
@@ -304,14 +306,59 @@ function placeBuilding (row, col, building) {
     }
 }
 
+
+//Scoreboard and endgame things
+function scoreBoard() {
+    var scoreBoard = document.getElementById('scoreboard')
+    const toInsert = "<table class='table table-striped table-dark'>\n" +
+        "            <thead>\n" +
+        "                <tr>\n" +
+        "                    <th scope='col'></th>\n" +
+        "                    <th scope='col'>Food</th>\n" +
+        "                    <th scope='col'>Wood</th>\n" +
+        "                    <th scope='col'>Ore</th>\n" +
+        "                    <th scope='col'>Serfs</th>\n" +
+        "                    <th scope='col'>Killed serfs</th>\n" +
+        "                    <th scope='col'>Turns</th>\n" +
+        "                </tr>\n" +
+        "            </thead>\n" +
+        "            <tbody>\n" +
+        "                <tr>\n" +
+        "                    <th scope='row'>Score</th>\n" +
+        "                    <td id='food'></td>\n" +
+        "                    <td id='wood'></td>\n" +
+        "                    <td id='ore'></td>\n" +
+        "                    <td id='serfs'></td>\n" +
+        "                    <td id='killed_serfs'></td>\n" +
+        "                    <td id='turns'></td>\n" +
+        "                </tr>\n" +
+        "            </tbody>\n" +
+        "        </table>"
+    scoreBoard.insertAdjacentHTML("beforeend", toInsert);
+
+    let food = document.getElementById('food')
+    let wood = document.getElementById('wood')
+    let ore = document.getElementById('ore')
+    let serfs = document.getElementById('serfs')
+    let turns = document.getElementById('turns')
+    let killedSerfs = document.getElementById('killed_serfs')
+    food.innerHTML = currentFoodPool+1;
+    wood.innerHTML = currentWoodPool;
+    ore.innerHTML = currentOrePool;
+    serfs.innerHTML = numOfSerfs;
+    turns.innerHTML = turnCount+1;
+    killedSerfs.innerHTML = serfKillCounter;
+}
+
+
 //TODO:
 function checkForGameOver() {
     if (numOfSerfs === 0 || turnCount > 140) {
         alert('Game Over!');
         gameIsRunning = false;
+        scoreBoard();
     }
 }
-
 //Dragging stuff
 //Serf
 let parentTile;
