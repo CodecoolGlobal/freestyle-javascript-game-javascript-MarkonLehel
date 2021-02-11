@@ -6,7 +6,7 @@ let currentFoodPool = 999;
 let currentWoodPool = 100;
 let currentOrePool = 100;
 
-let turnCount = 99;
+let turnCount = 139;
 
 let isWinter = false;
 let turnToWinter = 100;
@@ -133,13 +133,14 @@ function changeToWinter() {
     winterTransitionImage.classList.add('going');
 
     setTimeout(() => (setWinterAttributes()), 700);
+
     function setWinterAttributes() {
         for (const tile of tiles) {
-        tile.classList.add('winter');
-    }
-    for (const serf of serfs) {
-        serf.classList.add('winter');
-    }
+            tile.classList.add('winter');
+        }
+        for (const serf of serfs) {
+            serf.classList.add('winter');
+        }
     }
 
 }
@@ -223,7 +224,6 @@ function updateResourcesAndSerfs() {
     let woodConsumption = consumption[1];
     foodChange = fieldIncome - foodConsumption;
     woodChange = forestIncome - woodConsumption;
-    console.log(foodChange,woodChange);
 
     currentFoodPool = currentFoodPool + foodChange;
     currentWoodPool = currentWoodPool + woodChange;
@@ -287,6 +287,7 @@ function updateResourceDisplay() {
     oreCounter.innerHTML = currentOrePool.toString();
     serfCounter.innerHTML = numOfSerfs.toString();
 }
+
 //Gameplay
 
 function initBuildingEvents() {
@@ -301,7 +302,7 @@ function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
     let index = +row * 5 + +col;
     let tile = document_tiles[index];
-    if (!isWinter){
+    if (!isWinter) {
         tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
     } else {
         tile.insertAdjacentHTML('beforeend', '<div class="serf winter" draggable="true"></div>')
@@ -330,7 +331,7 @@ function getHouses() {
                 {
                     let tile = tiles[row][col];
                     if ((tile.tileType === "field" || tile.tileType === "village") && tile.hasBuilding && !tile.hasProductionImprovement && !tile.hasWorker) {
-                        let houseCoords = [[row],[col]];
+                        let houseCoords = [[row], [col]];
                         houses.push(houseCoords);
                     }
                 }
@@ -345,7 +346,7 @@ function getHouses() {
 
 function selectRandomHouse() {
     let houses = getHouses();
-    let random = Math.floor(Math.random()*houses.length);
+    let random = Math.floor(Math.random() * houses.length);
     let randomHouse = houses[random];
     //console.log(`random house: ${randomHouse}`);
     return randomHouse;
@@ -355,7 +356,7 @@ function spawnAdditionalSerf() {
     let selectedHouse = selectRandomHouse();
     let row;
     let col;
-    if (selectedHouse){
+    if (selectedHouse) {
         row = selectedHouse[0];
         col = selectedHouse[1];
         console.log("selected: ", row, col)
@@ -469,12 +470,12 @@ function scoreBoard() {
     let turns = document.getElementById('turns')
     let killedSerfs = document.getElementById('killed_serfs')
     let score = document.getElementById('score')
-    food.innerHTML = currentFoodPool+1;
+    food.innerHTML = currentFoodPool + 1;
     wood.innerHTML = currentWoodPool;
     ore.innerHTML = currentOrePool;
     serfs.innerHTML = numOfSerfs;
     killedSerfs.innerHTML = serfKillCounter;
-    turns.innerHTML = turnCount+1;
+    turns.innerHTML = turnCount + 1;
     // Add the buildings number to this
     score.innerHTML = (numOfSerfs * 10 + currentOrePool + currentWoodPool + currentFoodPool)
 
@@ -482,13 +483,43 @@ function scoreBoard() {
 
 //TODO:
 function checkForGameOver() {
-    if (numOfSerfs === 0 || turnCount > 140) {
+    if (numOfSerfs === 0) {
         alert('Game Over!');
         gameIsRunning = false;
         scoreBoard();
+    } else if (turnCount >= 140) {
+        gameIsRunning = false;
+        scoreBoard();
+        win()
+
     }
 }
 
+let modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+let btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+let span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+function win() {
+            console.log('yep')
+            modal.style.display = "block";
+        }
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
 
 //Dragging stuff
 //Serf
