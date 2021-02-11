@@ -304,7 +304,7 @@ function createSerfAt(row, col) {
     serfObject.addEventListener('dragstart', serfDragStart);
     serfObject.addEventListener('dragend', serfDragEnd);
     toggleTileWorkerStatus(tiles[row][col]);
-
+    numOfSerfs++;
 }
 
 function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovement = false, hasBuilding = false) {
