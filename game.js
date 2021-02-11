@@ -8,6 +8,7 @@ let turnCount = 0;
 let isWinter = false;
 let gameIsRunning = true;
 let serfKillCounter = 0;
+
 initGame();
 
 function drawBoard() {
@@ -232,26 +233,33 @@ function createSerfAt(row, col) {
 }
 
 function getHouses() {
-    let houses = new Set();
+    let houses = [];
     for (let row = 0; row < tiles.length; row++) {
         {
             for (let col = 0; col < tiles.length; col++) {
                 {
+                    //let houseIndex = 0;
                     let tile = tiles[row][col];
                     if (tile.tileType === "field" && tile.hasBuilding) {
-                        console.log(`house at: ${row}:${col}`);
-                        houses.add([row][col]);
-                        //console.log(houses);
-                        return houses;
+                        let houseCoords = [[row],[col]];
+                        houses.push(houseCoords);
+                        //houseIndex++;
+
                     }
                 }
             }
         }
     }
+    for (const coords of houses) {
+        console.log(`house at: ${coords}`);
+    }
+    return houses;
 }
 
 function spawnSerf() {
-    getHouses();
+    let houses = getHouses();
+
+
 }
 
 function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovement = false, hasBuilding = false) {
