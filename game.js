@@ -169,8 +169,10 @@ function calcResourceIncomePerTurn() {
                         popupMessage.classList.add("resource-income-num");
                         if (tile.tileType === 'field') {
                             tileIncome = tile.resourceAmount + (tile.hasProductionImprovement * 2);
-                            if (isWinter) {tileIncome = 1}
-                            fieldIncome +=  tileIncome;
+                            if (isWinter) {
+                                tileIncome = 1
+                            }
+                            fieldIncome += tileIncome;
                         } else if (tile.tileType === 'forest') {
                             tileIncome = tile.resourceAmount + (tile.hasProductionImprovement * 2);
                             forestIncome += tileIncome;
@@ -191,7 +193,7 @@ function calcResourceIncomePerTurn() {
 
 function calcResourceConsumptionPerTurn() {
     let woodConsumption = 0
-    if(isWinter) {
+    if (isWinter) {
         woodConsumption = numOfSerfs * 3; //winter
     }
     return [numOfSerfs, woodConsumption];
@@ -225,7 +227,7 @@ function updateResourcesAndSerfs() {
 }
 
 
-function updateResourceDisplay(){
+function updateResourceDisplay() {
     let foodCounter = document.getElementById("food-counter");
     let woodCounter = document.getElementById("wood-counter");
     let oreCounter = document.getElementById("ore-counter");
@@ -235,17 +237,17 @@ function updateResourceDisplay(){
     let woodIncomeCounter = document.getElementById("wood-income");
     let oreIncomeCounter = document.getElementById("ore-income");
 
-    if (foodChange >= 0){
-        if(foodChange !== 0) {
-                    foodChange = '+' + foodChange;
+    if (foodChange >= 0) {
+        if (foodChange !== 0) {
+            foodChange = '+' + foodChange;
         }
         foodIncomeCounter.classList.remove('negative')
     } else {
         foodIncomeCounter.classList.add('negative');
     }
-    if (woodChange >= 0){
+    if (woodChange >= 0) {
         if (woodChange !== 0) {
-                    woodChange = '+' + woodChange
+            woodChange = '+' + woodChange
         }
         woodIncomeCounter.classList.remove('negative')
     } else {
@@ -265,6 +267,7 @@ function updateResourceDisplay(){
     oreCounter.innerHTML = currentOrePool.toString();
     serfCounter.innerHTML = numOfSerfs.toString();
 }
+
 //Gameplay
 
 function initBuildingEvents() {
@@ -313,35 +316,37 @@ function killRandomSerf() {
     }
 }
 
-function placeBuilding (row, col, building) {
-    console.log(row,col);
-    if (currentWoodPool >= 30 && currentOrePool >= 30 && gameIsRunning){
+function placeBuilding(row, col, building) {
+    console.log(building);
+    if (currentWoodPool >= 30 && currentOrePool >= 30 && gameIsRunning) {
         let tile = tiles[row][col];
         let docTiles = document.getElementsByClassName('tile');
         console.log(+row * 5 + +col);
         let buildTile = docTiles[+row * 5 + +col];
         tile.hasBuilding = true;
-        if (building === 'house') {
+        if (building === 'house' && tile.tileType === 'field') {
             buildTile.classList.add('house');
-        } else if (building === 'farm'){
+        } else if (building === 'farm' && tile.tileType === 'field') {
             buildTile.classList.add('farm');
             tile.hasProductionImprovement = true;
-        } else if (building === 'mine'){
+        } else if (building === 'mine' && tile.tileType === 'mountain') {
             buildTile.classList.add('mine');
             tile.hasProductionImprovement = true;
-        } else if (building === 'logger'){
+        } else if (building === 'logger' && tile.tileType === 'forest') {
             buildTile.classList.add('logger');
             tile.hasProductionImprovement = true;
         }
-        currentOrePool -= 30;
-        currentWoodPool -= 30;
-        updateResourceDisplay()
+        if (tile.hasBuilding) {
+            currentOrePool -= 30;
+            currentWoodPool -= 30;
+            updateResourceDisplay();
+        }
+
     } else {
         //Let the user know not enough resources
     }
 }
 
-//TODO:
 function checkForGameOver() {
     if (numOfSerfs === 0 || turnCount > 140) {
         alert('Game Over!');
@@ -375,7 +380,7 @@ function serfDragEnd() {
 function buildingDragStart(event) {
     let dragImage = new Image();
     dragImage.src = 'Sprites/BuildIcon.png';
-    event.dataTransfer.setDragImage(dragImage, 0,0);
+    event.dataTransfer.setDragImage(dragImage, 0, 0);
     event.dataTransfer.setData('text', "building");
     let buildingType = this.getAttribute('building-type');
     event.dataTransfer.setData('type', buildingType);
@@ -418,7 +423,7 @@ function dropOnTile(event) {
     } else if (event.dataTransfer.getData('text') === 'building') {
         let buildingType = event.dataTransfer.getData('type');
         if (!tile.hasBuilding) {
-            placeBuilding(row,col,buildingType);
+            placeBuilding(row, col, buildingType);
 
 
         }

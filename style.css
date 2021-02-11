@@ -154,6 +154,11 @@ body {
     background-image: url('Sprites/SummerVillagerDefault.png');
 }
 
+.serf.winter {
+
+    background-image: url('Sprites/WinterVillagerDefault.png');
+}
+
 
 .serf.dragged {
     border-style: solid;
