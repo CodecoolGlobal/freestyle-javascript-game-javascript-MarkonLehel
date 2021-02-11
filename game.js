@@ -116,7 +116,7 @@ function FixedUpdate() {
         checkForGameOver();
         updateResourcesAndSerfs();
         updateTurnCounter();
-        spawnSerf();
+        spawnAdditionalSerf();
     }
 }
 
@@ -264,17 +264,20 @@ function selectRandomHouse() {
     let houses = getHouses();
     let random = Math.floor(Math.random()*houses.length);
     let randomHouse = houses[random];
-    console.log(`random house: ${randomHouse}`);
+    //console.log(`random house: ${randomHouse}`);
+    return randomHouse;
 }
 
-function spawnSerf() {
-    selectRandomHouse();
-    // let houses = getHouses();
-    // for (const coords of houses) {
-    //     console.log(`house at: ${coords}`);
-    // }
-
-
+function spawnAdditionalSerf() {
+    let selectedHouse = selectRandomHouse();
+    let row;
+    let col;
+    if (selectedHouse){
+        row = selectedHouse[0];
+        col = selectedHouse[1];
+        console.log("selected: ", row, col)
+        createSerfAt(row, col);
+    }
 }
 
 function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovement = false, hasBuilding = false) {
