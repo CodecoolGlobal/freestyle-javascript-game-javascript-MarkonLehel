@@ -179,7 +179,6 @@ function updateResourcesAndSerfs() {
     let fieldIncome = income[0];
     let mountainIncome = income[1];
     let forestIncome = income[2];
-    let serfsSpawned = 0;
 
     let foodConsumption = consumption[0];
     let foodChange = fieldIncome - foodConsumption;
@@ -194,7 +193,6 @@ function updateResourcesAndSerfs() {
     }
     currentWoodPool = currentWoodPool + forestIncome;
     currentOrePool = currentOrePool + mountainIncome;
-    numOfSerfs = numOfSerfs + serfsSpawned;
     updateResourceDisplay()
 }
 
@@ -222,7 +220,7 @@ function initBuildingEvents() {
 
 function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
-    let index = row * 5 + col;
+    let index = +row * 5 + +col;
     let tile = document_tiles[index];
     console.log(document_tiles);
     tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
@@ -230,6 +228,7 @@ function createSerfAt(row, col) {
     serfObject.addEventListener('dragstart', serfDragStart);
     serfObject.addEventListener('dragend', serfDragEnd);
     toggleTileWorkerStatus(tiles[row][col]);
+    numOfSerfs++;
 }
 
 function getHouses() {
@@ -237,7 +236,9 @@ function getHouses() {
     let houseTiles = document.getElementsByClassName('house');
     for (const houseTile of houseTiles) {
         //console.log(houseTile)
+        //houseTile.getAttribute("data-row")
     }
+
 
     //get houses
     let houses = [];
