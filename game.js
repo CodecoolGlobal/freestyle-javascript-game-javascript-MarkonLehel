@@ -116,7 +116,6 @@ function changeToWinter() {
     let tiles = document.getElementsByClassName('tile')
     for (const tile of tiles) {
         if (!tile.classList.contains('winter')) {
-            console.log('fut')
             tile.classList.add('winter')
         }
     }
@@ -310,7 +309,7 @@ function placeBuilding (row, col, building) {
 //Scoreboard and endgame things
 function scoreBoard() {
     var scoreBoard = document.getElementById('scoreboard')
-    const toInsert = "<table class='table table-striped table-dark'>\n" +
+    const toInsert = "<table class='table table-striped table-dark' style='width: 70%;'>\n" +
         "            <thead>\n" +
         "                <tr>\n" +
         "                    <th scope='col'></th>\n" +
@@ -324,7 +323,7 @@ function scoreBoard() {
         "            </thead>\n" +
         "            <tbody>\n" +
         "                <tr>\n" +
-        "                    <th scope='row'>Score</th>\n" +
+        "                    <th scope='row'>Statistics</th>\n" +
         "                    <td id='food'></td>\n" +
         "                    <td id='wood'></td>\n" +
         "                    <td id='ore'></td>\n" +
@@ -333,6 +332,14 @@ function scoreBoard() {
         "                    <td id='turns'></td>\n" +
         "                </tr>\n" +
         "            </tbody>\n" +
+        "        </table>\n" +
+        "        <table class='table table-striped table-dark' style='width: 30%;'>\n" +
+        "           <tbody>\n" +
+        "               <tr>\n" +
+        "               <th scope='row'>Score</th>\n" +
+        "               <td id='score'></td>\n" +
+        "               </tr>\n" +
+        "           </tbody>\n" +
         "        </table>"
     scoreBoard.insertAdjacentHTML("beforeend", toInsert);
 
@@ -342,12 +349,16 @@ function scoreBoard() {
     let serfs = document.getElementById('serfs')
     let turns = document.getElementById('turns')
     let killedSerfs = document.getElementById('killed_serfs')
+    let score = document.getElementById('score')
     food.innerHTML = currentFoodPool+1;
     wood.innerHTML = currentWoodPool;
     ore.innerHTML = currentOrePool;
     serfs.innerHTML = numOfSerfs;
-    turns.innerHTML = turnCount+1;
     killedSerfs.innerHTML = serfKillCounter;
+    turns.innerHTML = turnCount+1;
+    // Add the buildings number to this
+    score.innerHTML = (numOfSerfs * 10 + currentOrePool + currentWoodPool + currentFoodPool)
+
 }
 
 
