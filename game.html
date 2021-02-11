@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Feuda</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="Sprites/SummerVillagerDefault.png">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrapper">
+    <img id="winter-transition" src="Sprites/WinterTransition.png">
+    <div id="top-bar">
+        <div id="building-text">
+            <p>Buildings</p>
+        </div>
+        <div id="resource-bar">
+            <div class="resource">
+                <img src="Sprites/Meat.png">
+                <div class="resource-pool">
+                    <p id="food-counter">250</p>
+                    <p id="food-income">10</p>
+                </div>
+            </div>
+            <div class="resource">
+                <img src="Sprites/Log.png" style="">
+                <div class="resource-pool">
+                    <p id="wood-counter">250</p>
+                    <p id="wood-income">10</p>
+                </div>
+            </div>
+            <div class="resource">
+                <img src="Sprites/Ore.png">
+                <div class="resource-pool">
+                    <p id="ore-counter">250</p>
+                    <p id="ore-income">10</p>
+                </div>
+            </div>
+            <div class="resource serf-bar">
+            <img src="Sprites/SummerVillagerDefault.png">
+                <span id="serf-counter">10</span>
+            </div>
+            <div class="resource">
+            <span>Turn:
+                <span id="turn-counter">000</span>
+            </span>
+            </div>
+        </div>
+
+    </div>
+    <div id="building-menu">
+        <div class="building-row">
+            <div class="buildables">
+                <div class="building-tab">
+                    <div class="building" draggable="true" building-type="mine">
+                        <img src="Sprites/Mine.png" draggable="false">
+                    </div>
+                    <p class="building-name">Mine</p>
+                </div>
+                <div class="building-tab">
+                    <div class="building" draggable="true" building-type="logger">
+                        <img src="Sprites/LoggerIcon.png" draggable="false">
+                    </div>
+                    <p class="building-name">Logger</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="building-row">
+            <div class="buildables">
+                <div class="building-tab">
+                    <div class="building" draggable="true" building-type="house">
+                        <img src="Sprites/House.png" draggable="false">
+                    </div>
+                    <p class="building-name">House</p>
+                </div>
+                <div class="building-tab">
+                    <div class="building" draggable="true" building-type="farm">
+                        <img src="Sprites/Farm.png" draggable="false">
+                    </div>
+                    <p class="building-name">Farm</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="board-holder">
+        <div id="board">
+        </div>
+    </div>
+</div>
+    <button class="btn-gradient green mini rounded"><a href="index.html">Back to manual</a></button><br>
+<div id="scoreboard"></div>
+<script src="game.js" defer></script>
+</body>
+</html>
