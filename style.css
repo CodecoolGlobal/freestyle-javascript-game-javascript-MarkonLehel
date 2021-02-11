@@ -4,7 +4,7 @@ body {
 
 .wrapper {
     background-color: #755303;
-    margin: 50px 50px;
+    margin: 50px 50px 50px 50px;
     height: 400px;
     width: 500px;
 }
@@ -139,4 +139,53 @@ body {
     opacity: 0.4;
 }
 
+.btn-gradient.green {
+	background: rgba(130,200,160,1);
+	background: -moz-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(130,200,160,1)), color-stop(100%, rgba(130,199,158,1)));
+	background: -webkit-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+	background: -o-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+	background: -ms-linear-gradient(top, rgba(130,200,160,1) 0%, rgba(130,199,158,1) 100%);
+	background: linear-gradient(to bottom, rgba(130,200,160,1) 0%, rgba(124, 185, 149, 1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#82c8a0', endColorstr='#82c79e', GradientType=0 );
+}
 
+a:link {
+  text-decoration: none;
+    color: #444343
+}
+
+a:visited {
+  text-decoration: none;
+    color: #444343
+}
+
+a:hover {
+  text-decoration: none;
+    color: #2a2929
+}
+
+a:active {
+  text-decoration: none;
+    color: #000000
+}
+
+.color .green  {background: #82c8a0;}
+
+.btn-gradient.green:active  {background: #72B08E;}
+
+.rounded {
+  border-radius: 10px;
+}
+
+.btn-gradient {
+	margin: 5px;
+}
+
+.btn.mini,
+.btn-two.mini,
+.btn-gradient.mini,
+.btn-effect.mini {
+  padding: 4px 12px;
+  font-size: 12px;
+}

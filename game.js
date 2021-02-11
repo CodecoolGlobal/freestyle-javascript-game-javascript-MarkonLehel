@@ -4,7 +4,7 @@ let numOfSerfs = 1;
 let currentFoodPool = 5;
 let currentWoodPool = 25;
 let currentOrePool = 25;
-let turnCount = 96;
+let turnCount = 0;
 let isWinter = false;
 let turnToWinter = 100;
 let gameIsRunning = true;
@@ -111,6 +111,7 @@ function initGame() {
 
 }
 
+
 //Winter
 function changeToWinter() {
     let tiles = document.getElementsByClassName('tile')
@@ -121,7 +122,6 @@ function changeToWinter() {
     }
 }
 
-
 function FixedUpdate() {
     if (gameIsRunning) {
         checkForGameOver();
@@ -129,7 +129,6 @@ function FixedUpdate() {
         updateTurnCounter();
     }
 }
-
 
 function updateTurnCounter() {
     turnCount++;
@@ -141,6 +140,7 @@ function updateTurnCounter() {
     }
 
 }
+
 
 //Resource
 //TODO: Tiles with house dont contribute to food production
@@ -218,7 +218,6 @@ function updateResourcesAndSerfs() {
     updateResourceDisplay()
 }
 
-
 function updateResourceDisplay(){
     let foodCounter = document.getElementById("food-counter");
     let woodCounter = document.getElementById("wood-counter");
@@ -230,6 +229,8 @@ function updateResourceDisplay(){
     oreCounter.innerHTML = currentOrePool.toString();
     serfCounter.innerHTML = numOfSerfs.toString();
 }
+
+
 //Gameplay
 
 function initBuildingEvents() {
@@ -361,7 +362,6 @@ function scoreBoard() {
 
 }
 
-
 //TODO:
 function checkForGameOver() {
     if (numOfSerfs === 0 || turnCount > 140) {
@@ -370,6 +370,8 @@ function checkForGameOver() {
         scoreBoard();
     }
 }
+
+
 //Dragging stuff
 //Serf
 let parentTile;
@@ -384,12 +386,12 @@ function serfDragStart(event) {
 
 }
 
-
 function serfDragEnd() {
     let serf = document.querySelector('.dragged');
     serf.classList.remove('dragged');
     serf.classList.remove('opaque');
 }
+
 
 //Building
 
@@ -409,6 +411,7 @@ function buildingDragEnd() {
     let building = document.querySelector('.dragged');
     building.classList.remove('dragged');
 }
+
 
 //Tiles
 
