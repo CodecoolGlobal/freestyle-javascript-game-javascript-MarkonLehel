@@ -1,9 +1,9 @@
 let board = document.getElementById('board');
 let tiles = [];
 let numOfSerfs = 1;
-let currentFoodPool = 5;
-let currentWoodPool = 25;
-let currentOrePool = 25;
+let currentFoodPool = 50;
+let currentWoodPool = 250;
+let currentOrePool = 250;
 let turnCount = 0;
 let isWinter = false;
 let gameIsRunning = true;
@@ -115,6 +115,7 @@ function FixedUpdate() {
         checkForGameOver();
         updateResourcesAndSerfs();
         updateTurnCounter();
+        spawnSerf();
     }
 }
 
@@ -228,7 +229,29 @@ function createSerfAt(row, col) {
     serfObject.addEventListener('dragstart', serfDragStart);
     serfObject.addEventListener('dragend', serfDragEnd);
     toggleTileWorkerStatus(tiles[row][col]);
+}
 
+function getHouses() {
+    let houses = new Set();
+    for (let row = 0; row < tiles.length; row++) {
+        {
+            for (let col = 0; col < tiles.length; col++) {
+                {
+                    let tile = tiles[row][col];
+                    if (tile.tileType === "field" && tile.hasBuilding) {
+                        console.log(`house at: ${row}:${col}`);
+                        houses.add([row][col]);
+                        //console.log(houses);
+                        return houses;
+                    }
+                }
+            }
+        }
+    }
+}
+
+function spawnSerf() {
+    getHouses();
 }
 
 function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovement = false, hasBuilding = false) {
