@@ -1,7 +1,7 @@
 let board = document.getElementById('board');
 let tiles = [];
 
-let numOfSerfs = 1;
+let numOfSerfs = 0;
 let currentFoodPool = 999;
 let currentWoodPool = 100;
 let currentOrePool = 100;
@@ -59,7 +59,9 @@ function setUpTiles(fieldAmount = 12, mountainAmount = 6, forestAmount = 6) {
     let currentForests = 0;
 
 
-    tiles[2][2].tileType = 'village'
+    tiles[2][2].tileType = 'village';
+    tiles[2][2].hasBuilding = true;
+
     while (currentFields !== fieldAmount) {
 
         let row = Math.floor(Math.random() * 5);
@@ -148,7 +150,6 @@ function FixedUpdate() {
         checkForGameOver();
         updateResourcesAndSerfs();
         updateTurn();
-        spawnAdditionalSerf();
     }
 }
 
@@ -300,7 +301,11 @@ function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
     let index = +row * 5 + +col;
     let tile = document_tiles[index];
-    tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
+    if (!isWinter){
+        tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
+    } else {
+        tile.insertAdjacentHTML('beforeend', '<div class="serf winter" draggable="true"></div>')
+    }
     let serfObject = document_tiles[index].childNodes[0]
     serfObject.addEventListener('dragstart', serfDragStart);
     serfObject.addEventListener('dragend', serfDragEnd);
@@ -324,7 +329,7 @@ function getHouses() {
             for (let col = 0; col < tiles.length; col++) {
                 {
                     let tile = tiles[row][col];
-                    if (tile.tileType === "field" && tile.hasBuilding) {
+                    if ((tile.tileType === "field" || tile.tileType === "village") && tile.hasBuilding && !tile.hasProductionImprovement && !tile.hasWorker) {
                         let houseCoords = [[row],[col]];
                         houses.push(houseCoords);
                     }
@@ -393,6 +398,8 @@ function placeBuilding(row, col, building) {
         if (building === 'house' && tile.tileType === 'field') {
             buildTile.classList.add('house');
             tile.hasBuilding = true;
+            //serf spawn
+            spawnAdditionalSerf();
         } else if (building === 'farm' && tile.tileType === 'field') {
             buildTile.classList.add('farm');
             tile.hasBuilding = true;
