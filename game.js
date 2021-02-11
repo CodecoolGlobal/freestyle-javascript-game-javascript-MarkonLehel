@@ -1,7 +1,7 @@
 let board = document.getElementById('board');
 let tiles = [];
 
-let numOfSerfs = 1;
+let numOfSerfs = 0;
 let currentFoodPool = 999;
 let currentWoodPool = 100;
 let currentOrePool = 100;
@@ -59,7 +59,9 @@ function setUpTiles(fieldAmount = 12, mountainAmount = 6, forestAmount = 6) {
     let currentForests = 0;
 
 
-    tiles[2][2].tileType = 'village'
+    tiles[2][2].tileType = 'village';
+    tiles[2][2].hasBuilding = true;
+
     while (currentFields !== fieldAmount) {
 
         let row = Math.floor(Math.random() * 5);
@@ -165,6 +167,7 @@ function updateTurn() {
 
 
 //Resource
+//TODO: Tiles with house dont contribute to food production
 function calcResourceIncomePerTurn() {
     fieldIncome = 0;
     forestIncome = 0;
@@ -235,7 +238,6 @@ function updateResourcesAndSerfs() {
         killRandomSerf();
     }
 
-    numOfSerfs = numOfSerfs + serfsSpawned;
     updateResourceDisplay()
 }
 
@@ -297,14 +299,68 @@ function initBuildingEvents() {
 
 function createSerfAt(row, col) {
     let document_tiles = document.getElementsByClassName('tile');
-    let index = row * 5 + col;
+    let index = +row * 5 + +col;
     let tile = document_tiles[index];
-    tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
+    if (!isWinter){
+        tile.insertAdjacentHTML('beforeend', '<div class="serf" draggable="true"></div>')
+    } else {
+        tile.insertAdjacentHTML('beforeend', '<div class="serf winter" draggable="true"></div>')
+    }
     let serfObject = document_tiles[index].childNodes[0]
     serfObject.addEventListener('dragstart', serfDragStart);
     serfObject.addEventListener('dragend', serfDragEnd);
     toggleTileWorkerStatus(tiles[row][col]);
     numOfSerfs++;
+}
+
+function getHouses() {
+    //get house tiles
+    let houseTiles = document.getElementsByClassName('house');
+    for (const houseTile of houseTiles) {
+        //console.log(houseTile)
+        //houseTile.getAttribute("data-row")
+    }
+
+
+    //get houses
+    let houses = [];
+    for (let row = 0; row < tiles.length; row++) {
+        {
+            for (let col = 0; col < tiles.length; col++) {
+                {
+                    let tile = tiles[row][col];
+                    if ((tile.tileType === "field" || tile.tileType === "village") && tile.hasBuilding && !tile.hasProductionImprovement && !tile.hasWorker) {
+                        let houseCoords = [[row],[col]];
+                        houses.push(houseCoords);
+                    }
+                }
+            }
+        }
+    }
+    // for (const coords of houses) {
+    //     console.log(`house at: ${coords}`);
+    // }
+    return houses;
+}
+
+function selectRandomHouse() {
+    let houses = getHouses();
+    let random = Math.floor(Math.random()*houses.length);
+    let randomHouse = houses[random];
+    //console.log(`random house: ${randomHouse}`);
+    return randomHouse;
+}
+
+function spawnAdditionalSerf() {
+    let selectedHouse = selectRandomHouse();
+    let row;
+    let col;
+    if (selectedHouse){
+        row = selectedHouse[0];
+        col = selectedHouse[1];
+        console.log("selected: ", row, col)
+        createSerfAt(row, col);
+    }
 }
 
 function Tile(tileType, resourceAmount, hasWorker = false, hasProductionImprovement = false, hasBuilding = false) {
@@ -342,6 +398,8 @@ function placeBuilding(row, col, building) {
         if (building === 'house' && tile.tileType === 'field') {
             buildTile.classList.add('house');
             tile.hasBuilding = true;
+            //serf spawn
+            spawnAdditionalSerf();
         } else if (building === 'farm' && tile.tileType === 'field') {
             buildTile.classList.add('farm');
             tile.hasBuilding = true;
