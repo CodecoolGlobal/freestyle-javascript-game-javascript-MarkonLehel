@@ -2,11 +2,11 @@ let board = document.getElementById('board');
 let tiles = [];
 
 let numOfSerfs = 0;
-let currentFoodPool = 20;
-let currentWoodPool = 50;
-let currentOrePool = 50;
+let currentFoodPool = 40;
+let currentWoodPool = 80;
+let currentOrePool = 80;
 
-let turnCount = 98;
+let turnCount = 0;
 
 let isWinter = false;
 let turnToWinter = 100;
