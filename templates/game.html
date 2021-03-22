@@ -4,43 +4,43 @@
     <title>Feuda</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="icon" href="Sprites/SummerVillagerDefault.png">
+    <link rel="icon" href="../static/Sprites/SummerVillagerDefault.png">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../static/style/style.css">
 </head>
 <body>
 <div class="wrapper">
-    <img id="winter-transition" src="Sprites/WinterTransition.png" draggable="false">
+    <img id="winter-transition" src="../static/Sprites/WinterTransition.png" draggable="false">
     <div id="top-bar">
         <div id="building-text">
             <p>Buildings</p>
         </div>
         <div id="resource-bar">
             <div class="resource">
-                <img src="Sprites/Meat.png">
+                <img src="../static/Sprites/Meat.png">
                 <div class="resource-pool">
                     <p id="food-counter">40</p>
                     <p id="food-income">0</p>
                 </div>
             </div>
             <div class="resource">
-                <img src="Sprites/Log.png" style="">
+                <img src="../static/Sprites/Log.png" style="">
                 <div class="resource-pool">
                     <p id="wood-counter">80</p>
                     <p id="wood-income">0</p>
                 </div>
             </div>
             <div class="resource">
-                <img src="Sprites/Ore.png">
+                <img src="../static/Sprites/Ore.png">
                 <div class="resource-pool">
                     <p id="ore-counter">80</p>
                     <p id="ore-income">0</p>
                 </div>
             </div>
             <div class="resource serf-bar">
-            <img src="Sprites/SummerVillagerDefault.png">
+            <img src="../static/Sprites/SummerVillagerDefault.png">
                 <span id="serf-counter">1</span>
             </div>
             <div class="resource">
@@ -56,13 +56,13 @@
             <div class="buildables">
                 <div class="building-tab">
                     <div class="building" draggable="true" building-type="mine">
-                        <img src="Sprites/MineIcon.png" draggable="false">
+                        <img src="../static/Sprites/MineIcon.png" draggable="false">
                     </div>
                     <p class="building-name">Mine</p>
                 </div>
                 <div class="building-tab">
                     <div class="building" draggable="true" building-type="logger">
-                        <img src="Sprites/LoggerIcon.png" draggable="false">
+                        <img src="../static/Sprites/LoggerIcon.png" draggable="false">
                     </div>
                     <p class="building-name">Logger</p>
                 </div>
@@ -73,13 +73,13 @@
             <div class="buildables">
                 <div class="building-tab">
                     <div class="building" draggable="true" building-type="house">
-                        <img src="Sprites/HouseIcon.png" draggable="false">
+                        <img src="../static/Sprites/HouseIcon.png" draggable="false">
                     </div>
                     <p class="building-name">House</p>
                 </div>
                 <div class="building-tab">
                     <div class="building" draggable="true" building-type="farm">
-                        <img src="Sprites/FarmIcon.png" draggable="false">
+                        <img src="../static/Sprites/FarmIcon.png" draggable="false">
                     </div>
                     <p class="building-name">Farm</p>
                 </div>
@@ -100,6 +100,6 @@
       <div id="scoreboard"></div>
   </div>
 </div>
-<script src="game.js" defer></script>
+<script src="../game.js" defer></script>
 </body>
 </html>
